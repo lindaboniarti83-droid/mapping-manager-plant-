@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CEO Assessment Dashboard — Nabati Group 2025</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f4f1;color:#1a1a18;font-size:13px;line-height:1.5}
+
+/* HEADER */
+.hdr{background:#1a1a18;color:#fff;padding:18px 32px;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;position:sticky;top:0;z-index:200}
+.hdr h1{font-size:16px;font-weight:700;margin-bottom:2px}
+.hdr p{font-size:10px;opacity:.45}
+.hdr-badges{display:flex;gap:8px;flex-wrap:wrap}
+.hbdg{font-size:10px;padding:4px 11px;border-radius:5px;font-weight:600;white-space:nowrap;border:1px solid}
+.hb-grn{background:rgba(52,168,83,.18);color:#52a853;border-color:rgba(52,168,83,.3)}
+.hb-blu{background:rgba(66,133,244,.18);color:#4285f4;border-color:rgba(66,133,244,.3)}
+.hb-yel{background:rgba(251,188,4,.18);color:#c09000;border-color:rgba(251,188,4,.3)}
+.hb-red{background:rgba(234,67,53,.18);color:#ea4335;border-color:rgba(234,67,53,.3)}
+.hb-gry{background:rgba(255,255,255,.08);color:#aaa;border-color:rgba(255,255,255,.15)}
+
+/* LAYOUT */
+.main{padding:20px 32px;max-width:1320px;margin:0 auto}
+.sl{font-size:9px;font-weight:800;letter-spacing:.15em;color:#999;text-transform:uppercase;margin-bottom:8px;margin-top:20px;padding-bottom:6px;border-bottom:1px solid #e8e6e0}
+.sl:first-child{margin-top:0}
+
+/* METRICS */
+.metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
+.mc{background:#fff;border:1px solid #e8e6e0;border-radius:10px;padding:14px 16px;position:relative;overflow:hidden}
+.mc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--c,#1a1a18)}
+.ml{font-size:10px;color:#999;margin-bottom:4px}
+.mv{font-size:26px;font-weight:800;color:#1a1a18;line-height:1}
+.ms{font-size:10px;color:#bbb;margin-top:3px}
+
+/* INSIGHT BOX */
+.insight{background:#1a1a18;border-radius:10px;padding:14px 18px;margin-bottom:16px}
+.insight p{font-size:12px;color:#ddd;line-height:1.85}
+.insight strong{color:#fff}
+.insight .hl{color:#f5c23a}
+
+/* GRIDS */
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.r3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px}
+.r23{display:grid;grid-template-columns:1.4fr 1fr;gap:12px;margin-bottom:12px}
+
+/* CARD */
+.card{background:#fff;border:1px solid #e8e6e0;border-radius:10px;padding:16px 18px;margin-bottom:12px}
+.card-nm{margin-bottom:0}
+.ct{font-size:11px;font-weight:700;color:#1a1a18;margin-bottom:12px}
+
+/* BADGES */
+.bdg{display:inline-block;font-size:9px;padding:3px 8px;border-radius:5px;font-weight:700;letter-spacing:.03em}
+.b-dis{background:#EAF3DE;color:#2d6a0a}
+.b-dev{background:#EBF4FF;color:#1a4db5}
+.b-con{background:#FFF8E6;color:#8a5a00}
+.b-no{background:#FDECEA;color:#991F1F}
+.b-ok{background:#EAF3DE;color:#2d6a0a}
+.b-pend{background:#FFF8E6;color:#8a5a00}
+
+/* LEGEND */
+.legend{display:flex;gap:12px;font-size:10px;color:#888;margin-bottom:8px;flex-wrap:wrap}
+.legend span{display:flex;align-items:center;gap:4px}
+.ld{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+.note{font-size:10px;color:#bbb;margin-top:6px;line-height:1.5}
+
+/* BAR ROWS */
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.bar-lbl{width:200px;font-size:10px;color:#555;flex-shrink:0;line-height:1.3}
+.bar-track{flex:1;background:#f1efe8;border-radius:3px;height:9px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px}
+.bar-val{width:26px;text-align:right;font-size:10px;color:#888}
+
+/* TABLE */
+table.mtbl{width:100%;border-collapse:collapse;font-size:11px}
+table.mtbl th{text-align:left;padding:6px 10px;color:#888;font-weight:700;border-bottom:1px solid #e8e6e0;background:#f8f7f4;font-size:9px;text-transform:uppercase;letter-spacing:.06em}
+table.mtbl td{padding:8px 10px;border-bottom:1px solid #f1efe8;color:#1a1a18;vertical-align:middle;line-height:1.4}
+table.mtbl tr:last-child td{border:none}
+table.mtbl tr:hover td{background:#fafaf8}
+
+/* NAME BUTTON TABS */
+.tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px}
+.tab{font-size:10px;padding:5px 11px;border:1px solid #ddd;border-radius:6px;cursor:pointer;color:#777;background:#f5f4f1;transition:all .12s;white-space:nowrap}
+.tab:hover{background:#e8e6e0;color:#333}
+.tab.on{background:#1a1a18;color:#fff;border-color:#1a1a18;font-weight:700}
+.tab-rek-dis{border-left:3px solid #2d6a0a}
+.tab-rek-dev{border-left:3px solid #1a4db5}
+.tab-rek-con{border-left:3px solid #8a5a00}
+.tab-rek-no{border-left:3px solid #991F1F}
+
+/* INDIVIDUAL PROFILE */
+.prof-hdr{display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #f1efe8}
+.prof-name{font-size:17px;font-weight:800;color:#1a1a18;margin-bottom:3px}
+.prof-pos{font-size:11px;color:#666;margin-bottom:6px}
+.prof-meta{display:flex;gap:8px;flex-wrap:wrap}
+.pmeta{font-size:10px;color:#888;background:#f5f4f1;padding:2px 8px;border-radius:4px}
+.prof-stats{display:grid;grid-template-columns:repeat(4,auto);gap:8px 20px;text-align:center}
+.pstat-n{font-size:22px;font-weight:800;color:#1a1a18;line-height:1}
+.pstat-l{font-size:9px;color:#999;text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+
+.sec-t{font-size:9px;font-weight:800;color:#999;text-transform:uppercase;letter-spacing:.1em;margin-bottom:7px;margin-top:14px}
+.sec-t:first-child{margin-top:0}
+
+.txt-block{font-size:11px;color:#444;line-height:1.75;background:#f8f7f4;border-radius:7px;padding:10px 13px;margin-bottom:10px}
+
+.kk-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px}
+.kk-box{border-radius:7px;padding:10px 12px}
+.kk-grn{background:#EAF3DE;border:1px solid #c9e0b3}
+.kk-red{background:#FDECEA;border:1px solid #f5c0bc}
+.kk-yel{background:#FFF8E6;border:1px solid #f0d080}
+.kk-title{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px}
+.kk-grn .kk-title{color:#2d6a0a}
+.kk-red .kk-title{color:#991F1F}
+.kk-yel .kk-title{color:#7A5000}
+.kk-item{font-size:10px;color:#333;padding:3px 0;border-bottom:1px solid rgba(0,0,0,.06);line-height:1.45;display:flex;gap:5px}
+.kk-item:last-child{border:none}
+.kk-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.kk-grn .kk-dot{background:#2d6a0a}
+.kk-red .kk-dot{background:#991F1F}
+.kk-yel .kk-dot{background:#7A5000}
+
+.score-row{display:flex;align-items:center;gap:7px;margin-bottom:5px}
+.sc-lbl{font-size:10px;color:#555;width:230px;flex-shrink:0}
+.sc-track{flex:1;background:#f1efe8;border-radius:3px;height:8px;overflow:hidden}
+.sc-fill{height:100%;border-radius:3px}
+.sc-val{font-size:10px;font-weight:700;width:20px;text-align:right}
+
+.dev-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.dev-tag{background:#EBF4FF;color:#1a4db5;font-size:10px;padding:3px 9px;border-radius:5px;font-weight:600;border:1px solid #c0d9f5}
+
+.resum-box{background:#f0f4ff;border:1px solid #c8d8f5;border-radius:8px;padding:12px 14px;margin-top:10px}
+.resum-lbl{font-size:9px;font-weight:800;color:#1a4db5;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.resum-txt{font-size:11px;color:#1a1a18;line-height:1.8}
+
+.risk-box{background:#FFF8E6;border:1px solid #f0d080;border-radius:8px;padding:11px 14px;margin-top:8px}
+.risk-lbl{font-size:9px;font-weight:800;color:#7A5000;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px}
+.risk-txt{font-size:11px;color:#5a3500;line-height:1.75}
+
+.dev-box{background:#f0f7f0;border:1px solid #c4dfc4;border-radius:8px;padding:11px 14px;margin-top:8px}
+.dev-lbl{font-size:9px;font-weight:800;color:#2d6a0a;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px}
+.dev-txt{font-size:11px;color:#1a4d1a;line-height:1.75}
+
+.rek-final{display:flex;align-items:center;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid #f1efe8;flex-wrap:wrap}
+.rek-label{font-size:10px;color:#888}
+
+/* DISC BADGE */
+.disc-big{font-size:18px;font-weight:900;color:#1a1a18;letter-spacing:.05em;background:#f5f4f1;border-radius:6px;padding:4px 10px;display:inline-block;margin-right:8px}
+
+/* FIT METER */
+.fit-meter{display:flex;align-items:center;gap:8px}
+.fit-track{flex:1;background:#f1efe8;border-radius:5px;height:12px;overflow:hidden}
+.fit-fill{height:100%;border-radius:5px}
+.fit-pct{font-size:13px;font-weight:800;min-width:40px;text-align:right}
+
+/* RADAR SVG area */
+.svg-wrap{width:100%;overflow:hidden}
+
+/* FILTER ROW */
+.frow{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+.fsel{background:#fff;border:1px solid #ddd;color:#333;border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer;font-family:inherit}
+.fsel:focus{outline:none;border-color:#888}
+.rcnt{font-size:10px;color:#999;margin-left:auto}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div>
+    <h1>CEO Assessment Dashboard — Nabati Group</h1>
+    <p>Hasil Assessment Manager &nbsp;·&nbsp; Batch 2025 &nbsp;·&nbsp; 34 Peserta &nbsp;·&nbsp; CONFIDENTIAL</p>
+  </div>
+  <div class="hdr-badges">
+    <span class="hbdg hb-grn" id="hb1"></span>
+    <span class="hbdg hb-blu" id="hb2"></span>
+    <span class="hbdg hb-yel" id="hb3"></span>
+    <span class="hbdg hb-red" id="hb4"></span>
+    <span class="hbdg hb-gry" id="hb5"></span>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- INSIGHT -->
+<div class="insight" id="insightBox"></div>
+
+<!-- METRICS -->
+<div class="sl">gambaran umum</div>
+<div class="metrics" id="metricsRow"></div>
+
+<!-- CHARTS ROW 1 -->
+<div class="sl">distribusi rekomendasi & profil kompetensi</div>
+<div class="r23">
+  <div class="card card-nm">
+    <div class="ct">Fit Percentage per Individu — diurutkan dari tertinggi</div>
+    <div class="legend">
+      <span><span class="ld" style="background:#2d6a0a"></span>Disarankan</span>
+      <span><span class="ld" style="background:#1a4db5"></span>Disarankan + Dev</span>
+      <span><span class="ld" style="background:#c09000"></span>Dipertimbangkan</span>
+      <span><span class="ld" style="background:#c0392b"></span>Tidak Disarankan</span>
+    </div>
+    <svg id="svgFit" viewBox="0 0 760 200" width="100%" style="display:block"></svg>
+  </div>
+  <div class="card card-nm">
+    <div class="ct">Distribusi Rekomendasi</div>
+    <svg id="svgRek" viewBox="0 0 280 200" width="100%" style="display:block"></svg>
+  </div>
+</div>
+
+<!-- CHARTS ROW 2 -->
+<div class="r2">
+  <div class="card card-nm">
+    <div class="ct">Profil IQ — General vs Analytic (urutan IQ General)</div>
+    <div class="legend">
+      <span><span class="ld" style="background:#1a4db5"></span>IQ General</span>
+      <span><span class="ld" style="background:#2d8a6a"></span>IQ Analytic</span>
+    </div>
+    <svg id="svgIQ" viewBox="0 0 620 180" width="100%" style="display:block"></svg>
+    <div class="note">Di atas rata-rata: IQ ≥ 110 &nbsp;·&nbsp; Rata-rata: 95–109 &nbsp;·&nbsp; Perlu perhatian: &lt; 95</div>
+  </div>
+  <div class="card card-nm">
+    <div class="ct">Distribusi Tipe DISC & Leadership Adaptability</div>
+    <svg id="svgDisc" viewBox="0 0 320 200" width="100%" style="display:block"></svg>
+    <div class="note">D = Dominant &nbsp;·&nbsp; I = Influential &nbsp;·&nbsp; S = Steady &nbsp;·&nbsp; C = Conscientious</div>
+  </div>
+</div>
+
+<!-- RADAR + DIVISION -->
+<div class="r2">
+  <div class="card card-nm">
+    <div class="ct">Rata-rata Aspek Kompetensi — Seluruh Peserta (Skala 1–5)</div>
+    <svg id="svgRadar" viewBox="0 0 340 280" width="100%" style="display:block;max-height:280px"></svg>
+  </div>
+  <div class="card card-nm">
+    <div class="ct">Rekomendasi per Division</div>
+    <svg id="svgDiv" viewBox="0 0 320 240" width="100%" style="display:block"></svg>
+  </div>
+</div>
+
+<!-- SUMMARY TABLE -->
+<div class="sl">ringkasan kesiapan & rekomendasi per individu</div>
+<div class="card card-nm">
+  <div class="ct">Tabel Rekomendasi CEO — Semua Peserta</div>
+  <div class="frow">
+    <select class="fsel" id="fDiv" onchange="renderSummary()"><option value="">Semua Division</option></select>
+    <select class="fsel" id="fRek" onchange="renderSummary()">
+      <option value="">Semua Rekomendasi</option>
+      <option>DISARANKAN</option>
+      <option>DISARANKAN DENGAN PENGEMBANGAN</option>
+      <option>DIPERTIMBANGKAN</option>
+      <option>TIDAK DISARANKAN</option>
+    </select>
+    <select class="fsel" id="fLvl" onchange="renderSummary()"><option value="">Semua Level</option></select>
+    <span class="rcnt" id="rcnt"></span>
+  </div>
+  <div style="overflow-x:auto">
+    <table class="mtbl">
+      <thead><tr>
+        <th>#</th><th>Nama</th><th>Posisi & Division</th>
+        <th>IQ</th><th>DISC</th><th>Fit %</th>
+        <th>Kognitif</th><th>Kinerja</th><th>Leadership</th>
+        <th>Rekomendasi</th><th>Status</th>
+      </tr></thead>
+      <tbody id="sumTbody"></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- INDIVIDUAL PROFILES -->
+<div class="sl">profil individual — klik nama untuk detail lengkap</div>
+<div class="card card-nm">
+  <div class="ct">Kelebihan, Kekurangan & Rekomendasi per Individu</div>
+  <div class="tabs" id="tabs"></div>
+  <div id="profArea"></div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+var DATA = [{"nama": "CHRISTIANTO YITRO SUJIWA", "nik": "25001095", "jabatan": "PLANT GA MANAGER", "job_level": "MANAGER", "departement": "GENERAL AFFAIR PLANT", "division": "MANUFACTURE", "pendidikan": "LAW", "iq_general": 105, "iq_analytic": 102, "iq_cat": "RATA-RATA", "kog_label": "1", "kb": 3, "km": 3, "kk": 4, "kp": 4, "kt": 3, "ko": 3, "lm": 3, "le": 3, "lpl": 4, "la": 3, "kinerja_label": "OPERASIONAL CUKUP", "lead_label": "1", "disc": "DC", "disc_grp": "D", "lead_adapt": "Average Leadership Adaptability", "fit": 0.8, "rek": "DISARANKAN DENGAN PENGEMBANGAN", "status": "COMPLETED", "txt_kognitif": "Dari aspek kognitif, Pak Chris menunjukkan kemampuan yang cukup baik dalam memahami situasi operasional, menganalisa permasalahan kerja, serta mencari solusi yang bersifat praktis dan aplikatif. Beliau juga mampu melihat peluang perbaikan proses kerja dan alternatif penyelesaian masalah dengan pendekatan yang realistis dan terarah, sehingga cukup mendukung dalam menangani dinamika operasional dan kebutuhan koordinasi kerja di lingkungan plant.", "txt_kinerja": "Dari aspek kinerja, Dari aspek kinerja, Pak Chris menunjukkan dorongan berprestasi, inisiatif kerja, dan tanggung jawab yang cukup baik dalam mendukung kelancaran operasional GA Plant. Beliau juga cukup tangguh dalam menghadapi dinamika dan tekanan kerja operasional, serta cenderung cepat dan aktif dalam menangani permasalahan kerja. Selain itu, pendekatan kerja yang ditunjukkan relatif tidak impulsif dalam mengambil tindakan sehingga cukup mendukung kontrol pelaksanaan kerja operasional. Namun, karena lebih berorientasi pada tindakan dan penyelesaian cepat, kedalaman pertimbangan pada situasi kerja yang lebih kompleks masih perlu lebih diperhatikan agar efektivitas pelaksanaan kerja dapat berjalan lebih optimal.", "txt_lead": "Dari aspek kerja sama dan kepemimpinan, Pak Chris menunjukkan kecenderungan memimpin dengan pendekatan yang tegas, cepat, dan berorientasi pada kontrol operasional. Beliau cukup mampu mengarahkan pekerjaan, mengambil kendali dalam situasi kerja, serta menjaga pelaksanaan operasional GA Plant tetap berjalan sesuai target dan kebutuhan kerja. Namun, karena pendekatan kepemimpinan yang ditunjukkan cenderung direct, dominan, dan lebih berfokus pada penyelesaian tugas, pelibatan bawahan, fleksibilitas komunikasi, serta pendekatan interpersonal masih perlu lebih dikembangkan agar koordinasi dan engagement tim dapat berjalan lebih optimal.", "txt_rekomendasi": "Secara umum, Pak Chris DISARANKAN DENGAN PENGEMBANGAN untuk posisi GA Plant Manager, terutama dari sisi ketegasan, kemampuan mengontrol operasional, keberanian mengambil keputusan, serta kemampuan menghadapi dinamika operasional plant yang cepat dan berubah-ubah. Beliau juga menunjukkan dorongan kerja dan orientasi penyelesaian masalah yang cukup mendukung dalam menjaga kelancaran operasional GA di lingkungan plant.\n\nNamun demikian, untuk optimal pada posisi ini, masih perlu penguatan pada aspek komunikasi interpersonal, pelibatan dan pengembangan bawahan, serta kedalaman pertimbangan dalam situasi yang lebih kompleks agar koordinasi lintas fungsi dan efektivitas pengelolaan tim dapat berjalan lebih seimbang dan optimal.", "txt_pengembangan": "Meningkatkan fleksibilitas komunikasi dan pendekatan interpersonal dalam pengelolaan tim, memperkuat pelibatan bawahan dalam koordinasi kerja, serta meningkatkan kedalaman pertimbangan dalam pengambilan keputusan agar efektivitas pengelolaan operasional GA Plant dapat berjalan lebih optimal.", "txt_risiko": "Kecenderungan memimpin dengan pendekatan yang sangat direct dan berorientasi pada tindakan kemungkinan dapat mempengaruhi pelibatan bawahan, fleksibilitas komunikasi, serta kedalaman pertimbangan dalam menghadapi situasi operasional dan koordinasi lintas fungsi yang lebih kompleks.", "txt_highlight": "Kuat dalam mengambil kontrol dan driving operasional secara cepat di situasi dinamis, namun pengelolaan emosi dan kedalaman pertimbangan pada situasi kompleks masih perlu dikembangkan.", "age": 32, "service_year": 0, "location": "PLANT MAJALENGKA", "sex": "L", "kelebihan_aspek": ["Kemampuan Berpikir Kreatif", "Dorongan Berprestasi & Proaktif", "Perencanaan & Pengambilan Keputusan"], "kekurangan_aspek": []}, {"nama": "NOVIANTA KUSWANDI", "nik": "23010539", "jabatan": "CORPORATE PEOPLE DEVELOPMENT MANAGER", "job_level": "MANAGER", "departement": "PEOPLE DEVELOPMENT", "division": "CORPORATE HUMAN CAPITAL", "pendidikan": "PSYCHOLOGY", "iq_general": 106, "iq_analytic": 112, "iq_cat": "RATA-RATA", "kog_label": "0", "kb": 3, "km": 4, "kk": 4, "kp": 3, "kt": 3, "ko": 3, "lm": 3, "le": 3, "lpl": 4, "la": 2, "kinerja_label": "OPERASIONAL CUKUP", "lead_label": "1", "disc": "CD", "disc_grp": "C", "lead_adapt": "Average Leadership Adaptability", "fit": 0.75, "rek": "DIPERTIMBANGKAN", "status": "COMPLETED", "txt_kognitif": "Dari aspek kognitif, Pak Novianta menunjukkan kemampuan yang cukup baik dalam memahami informasi, proses kerja, serta hubungan antar proses operasional secara cukup cepat dan praktis. Beliau juga mampu menganalisa permasalahan kerja dan mencari solusi yang bersifat operasional dengan pendekatan yang aplikatif. Selain itu, Pak Novianta menunjukkan pola pikir yang cukup terbuka dalam melihat peluang perbaikan kerja, meskipun kedalaman pertimbangan strategis serta fleksibilitas dalam mengembangkan inovasi masih dapat lebih ditingkatkan.", "txt_kinerja": "Dari aspek kinerja, Pak Novianta menunjukkan dorongan kerja, orientasi pencapaian, dan tanggung jawab yang cukup baik dalam menjalankan pekerjaan operasional. Beliau cenderung fokus pada penyelesaian target kerja, menjaga kontrol pelaksanaan pekerjaan, serta cukup aktif dalam menangani permasalahan operasional. Selain itu, pendekatan kerja yang ditunjukkan cenderung cukup terarah dan tidak impulsif dalam mengambil tindakan sehingga cukup mendukung kestabilan pelaksanaan kerja. Namun, pada situasi kerja yang menuntut respons sangat cepat dan perubahan mendadak, beliau kemungkinan membutuhkan waktu untuk memastikan arah tindakan yang diambil telah sesuai dengan pertimbangan dan kondisi kerja yang ada.", "txt_lead": "Dari aspek kerja sama dan kepemimpinan, Pak Novianta menunjukkan kecenderungan memimpin dengan pendekatan yang tegas, terarah, dan berorientasi pada kontrol operasional. Beliau cukup mampu mengarahkan pekerjaan serta menjaga pelaksanaan kerja tetap berjalan sesuai target dan kebutuhan operasional. Meskipun cukup kuat dalam mengontrol pekerjaan, pendekatan kepemimpinan yang ditunjukkan cenderung lebih berfokus pada penyelesaian tugas dibanding dominasi secara personal. Namun, karena komunikasi cenderung direct dan task oriented, fleksibilitas komunikasi, pelibatan bawahan, serta pengelolaan emosi dalam menghadapi tekanan kerja masih perlu lebih dikembangkan agar koordinasi dan efektivitas kerja tim dapat berjalan lebih optimal.", "txt_rekomendasi": "Secara umum, Pak Novianta DIPERTIMBANGKAN untuk posisi Corporate People Development Manager apabila dibandingkan dengan peran yang lebih operasional atau kontrol kerja. Hal ini karena pendekatan kerja dan kepemimpinannya cenderung task oriented, direct, serta lebih kuat pada kontrol operasional dan pencapaian target dibanding pengembangan people, coaching, dan pendekatan interpersonal. Selain itu, kebutuhan sosial dan pendekatan komunikasi interpersonal yang relatif rendah kemungkinan dapat mempengaruhi efektivitas dalam membangun engagement, pengembangan bawahan, serta kolaborasi yang lebih persuasif dan relationship-oriented yang cukup dibutuhkan pada posisi People Development.\n\nNamun demikian, beliau tetap memiliki potensi dalam aspek pengelolaan proses, kedisiplinan pelaksanaan program, serta kontrol terhadap implementasi kerja yang terstruktur.", "txt_pengembangan": "Meningkatkan fleksibilitas komunikasi dan pendekatan interpersonal, memperkuat kemampuan coaching serta pelibatan bawahan, dan meningkatkan sensitivitas terhadap kebutuhan pengembangan individu maupun kolaborasi lintas fungsi agar efektivitas pengelolaan people development dapat berjalan lebih optimal.", "txt_risiko": "Kecenderungan yang lebih berorientasi pada kontrol operasional, penyelesaian tugas, dan komunikasi yang direct kemungkinan dapat mempengaruhi efektivitas dalam membangun engagement, pendekatan coaching, serta pengembangan hubungan interpersonal yang dibutuhkan dalam pengelolaan people development secara optimal.", "txt_highlight": "Kuat dalam analisa, kontrol kerja, dan efektivitas operasional, namun fleksibilitas interpersonal dan driving perubahan yang lebih adaptif masih perlu diperkuat.", "age": 41, "service_year": 2, "location": "WU TOWER", "sex": "L", "kelebihan_aspek": ["Kemampuan Pemecahan Masalah", "Kemampuan Berpikir Kreatif", "Perencanaan & Pengambilan Keputusan"], "kekurangan_aspek": ["Adaptasi terhadap Perubahan"]}, {"nama": "INDAH JAYASARI", "nik": "25000995", "jabatan": "PEOPLE BUSINESS PARTNER - PLANT RANCAEKEK & CICALENGKA", "job_level": "MANAGER", "departement": "PLANT HUMAN CAPITAL", "division": "CORPORATE HUMAN CAPITAL", "pendidikan": "LAW", "iq_general": 102, "iq_analytic": 111, "iq_cat": "RATA-RATA", "kog_label": "0", "kb": 3, "km": 4, "kk": 4, "kp": 3, "kt": 3, "ko": 3, "lm": 3, "le": 3, "lpl": 4, "la": 2, "kinerja_label": "OPERASIONAL CUKUP", "lead_label": "1", "disc": "DC", "disc_grp": "D", "lead_adapt": "Average Leadership Adaptability", "fit": 0.8, "rek": "DISARANKAN DENGAN PENGEMBANGAN", "status": "COMPLETED", "txt_kognitif": "Dari aspek kognitif, Bu Indah menunjukkan kemampuan berpikir dan pemahaman kerja yang cukup kuat dalam memahami informasi, pola masalah, serta situasi kerja secara praktis maupun operasional. Beliau juga mampu menganalisa permasalahan dan menentukan solusi secara cepat dengan pendekatan yang praktis, aktif, dan berorientasi pada tindakan. Selain itu, Bu Indah menunjukkan pola pikir yang terbuka terhadap tantangan maupun alternatif cara kerja baru yang dinilai efektif sehingga cukup mendukung adaptasi dan penyelesaian kerja pada situasi operasional yang dinamis.", "txt_kinerja": "Dari aspek kinerja, Bu Indah menunjukkan dorongan kerja dan tanggung jawab yang cukup baik dalam mendukung penyelesaian pekerjaan operasional. Beliau cenderung cepat dalam mengambil keputusan, aktif menghadapi tantangan kerja, serta cukup fokus dalam mendorong pencapaian target dan pelaksanaan kerja. Selain itu, kemampuan memahami situasi kerja dan menentukan tindakan secara cepat cukup mendukung efektivitas kerja pada situasi operasional yang dinamis. Namun, dalam situasi kerja dengan tekanan tinggi, pengelolaan emosi dan konsistensi pendekatan kerja masih perlu lebih diperkuat agar efektivitas pelaksanaan kerja dapat berjalan lebih optimal.", "txt_lead": "Dari aspek kerja sama dan kepemimpinan, Bu Indah menunjukkan kecenderungan memimpin dengan pendekatan yang tegas, cepat, dan berorientasi pada penyelesaian pekerjaan serta pencapaian target kerja. Beliau cukup mampu mengarahkan pekerjaan, mengambil keputusan, serta menjaga respons kerja tim pada situasi operasional yang dinamis. Namun, karena pendekatannya cenderung direct dan action oriented, fleksibilitas komunikasi, pelibatan bawahan, serta pengelolaan emosi dalam menghadapi tekanan kerja masih perlu lebih dikembangkan agar koordinasi dan efektivitas kerja tim dapat berjalan lebih optimal.", "txt_rekomendasi": "Secara umum, Bu Indah DISARANKAN DENGAN PENGEMBANGAN untuk posisi People Business Partner, terutama dari sisi kecepatan memahami situasi kerja, keberanian mengambil keputusan, kemampuan menghadapi dinamika operasional, serta keberanian dalam mendorong penyelesaian masalah dan pencapaian target kerja. Beliau juga cukup aktif dan responsif dalam menangani tantangan kerja yang dinamis.\n\nNamun demikian, untuk optimal pada posisi ini, masih perlu penguatan pada aspek fleksibilitas komunikasi, pendekatan interpersonal, pengelolaan emosi, serta kemampuan membangun engagement dan kolaborasi yang lebih suportif. Hal ini karena pendekatan kerja yang cenderung direct dan action oriented kemungkinan dapat mempengaruhi efektivitas dalam menjalankan peran partnering, coaching, dan stakeholder management secara lebih optimal.", "txt_pengembangan": "Meningkatkan fleksibilitas komunikasi dan pendekatan interpersonal dalam membangun engagement kerja, memperkuat pengelolaan emosi pada situasi tekanan tinggi, serta meningkatkan konsistensi pendekatan coaching dan kolaborasi agar efektivitas peran sebagai People Business Partner dapat berjalan lebih optimal.", "txt_risiko": "Kecenderungan bekerja dengan pendekatan yang cepat, direct, dan berorientasi pada tindakan kemungkinan dapat mempengaruhi fleksibilitas komunikasi, pengelolaan emosi, serta efektivitas dalam membangun engagement dan pendekatan interpersonal yang lebih suportif pada dinamika hubungan kerja yang kompleks.", "txt_highlight": "Kuat dalam driving pekerjaan, kecepatan pengambilan keputusan, dan pencapaian target operasional, namun fleksibilitas komunikasi dan pengelolaan emosi dalam dinamika hubungan kerja masih perlu diperkuat.", "age": 38, "service_year": 0, "location": "PLANT RANCAEKEK", "sex": "P", "kelebihan_aspek": ["Kemampuan Pemecahan Masalah", "Kemampuan Berpikir Kreatif", "Perencanaan & Pengambilan Keputusan"], "kekurangan_aspek": ["Adaptasi terhadap Perubahan"]}, {"nama": "MUHAMMAD FERRY ROSADI", "nik": "18000033", "jabatan": "PEOPLE BUSINESS PARTNER - PLANT MAJALENGKA", "job_level": "MANAGER", "departement": "PLANT HUMAN CAPITAL", "division": "CORPORATE HUMAN CAPITAL", "pendidikan": "TEKNIK MESIN", "iq_general": 102, "iq_analytic": 100, "iq_cat": "RATA-RATA", "kog_label": "1", "kb": 3, "km": 3, "kk": 4, "kp": 3, "kt": 3, "ko": 3, "lm": 3, "le": 3, "lpl": 4, "la": 3, "kinerja_label": "OPERASIONAL CUKUP", "lead_label": "1", "disc": "DCI", "disc_grp": "D", "lead_adapt": "High Leadership Adaptability", "fit": 0.8, "rek": "DISARANKAN DENGAN PENGEMBANGAN", "status": "COMPLETED", "txt_kognitif": "Dari aspek kognitif, Pak Ferry menunjukkan kemampuan yang cukup baik dalam memahami informasi, situasi kerja, serta proses operasional secara praktis dan aplikatif. Beliau juga cukup mampu menganalisa permasalahan dan mencari solusi yang bersifat operasional dengan kecenderungan langsung pada tindakan dan penyelesaian masalah. Selain itu, Ferry menunjukkan pendekatan berpikir yang terbuka dan aktif dalam memahami situasi kerja, meskipun kedalaman analisa strategis masih dapat lebih dikembangkan agar pengambilan keputusan pada situasi yang lebih kompleks dapat berjalan lebih optimal.", "txt_kinerja": "Dari aspek kinerja, Pak Ferry menunjukkan dorongan kerja dan orientasi pencapaian yang cukup baik dalam mendukung penyelesaian pekerjaan operasional. Beliau cenderung aktif dan cukup cepat dalam merespons maupun menangani permasalahan kerja pada situasi operasional yang dinamis. Selain itu, kemampuan adaptasi terhadap perubahan kerja juga cukup mendukung efektivitas pelaksanaan kerja. Namun, karena pendekatan kerja yang cenderung berorientasi pada tindakan dan kecepatan respons, kedalaman pertimbangan serta kestabilan emosi dalam menghadapi tekanan kerja masih perlu lebih diperkuat agar efektivitas kerja dapat berjalan lebih optimal.", "txt_lead": "Dari aspek kerja sama dan kepemimpinan, Pak Ferry menunjukkan kecenderungan memimpin dengan pendekatan yang cukup tegas, cepat, dan berorientasi pada penyelesaian pekerjaan. Beliau cukup mampu mengarahkan pekerjaan, mengambil keputusan, serta menjaga respons kerja tim pada situasi operasional yang dinamis. Selain itu, kemampuan interpersonal yang relatif cukup baik juga mendukung koordinasi dan hubungan kerja tim. Namun, karena pendekatannya cenderung cepat dan action oriented, pada situasi kerja dengan tekanan tinggi beliau kemungkinan dapat menjadi lebih reaktif secara emosional sehingga fleksibilitas komunikasi, pengelolaan emosi, dan konsistensi pendekatan kepemimpinan masih perlu lebih diperkuat agar efektivitas koordinasi dan pengelolaan tim dapat berjalan lebih optimal.", "txt_rekomendasi": "Secara umum, Ferry DISARANKAN DENGAN PENGEMBANGAN untuk posisi People Business Partner Manager, terutama dari sisi kecepatan respons, keberanian mengambil keputusan, kemampuan menghadapi dinamika kerja, serta kemampuan koordinasi yang relatif cukup baik. Beliau juga cukup aktif dan responsif dalam menangani permasalahan operasional maupun kebutuhan kerja yang dinamis.\n\nNamun demikian, untuk optimal pada posisi ini, masih perlu penguatan pada aspek pengelolaan emosi, kedalaman pendekatan interpersonal, fleksibilitas komunikasi, serta konsistensi dalam membangun engagement dan hubungan kerja yang lebih suportif. Hal ini karena pendekatan kerja yang cenderung cepat, direct, dan action oriented kemungkinan dapat mempengaruhi efektivitas dalam menjalankan peran strategic partnering, coaching, dan stakeholder management secara lebih optimal.", "txt_pengembangan": "Meningkatkan pengelolaan emosi dan kestabilan respons dalam menghadapi tekanan kerja, memperkuat kedalaman pendekatan interpersonal dan stakeholder management, serta meningkatkan konsistensi komunikasi dan pendekatan coaching agar efektivitas peran sebagai strategic people partner dapat berjalan lebih optimal.", "txt_risiko": "Kecenderungan bekerja dengan tempo cepat, direct, dan berorientasi pada tindakan kemungkinan dapat mempengaruhi kestabilan pengelolaan emosi, kedalaman pendekatan interpersonal, serta konsistensi komunikasi dan engagement dalam menghadapi dinamika hubungan kerja maupun tekanan operasional yang tinggi.", "txt_highlight": "Kuat dalam kecepatan respons dan adaptasi terhadap dinamika operasional, namun kestabilan emosi dan konsistensi pendekatan kerja saat tekanan tinggi masih perlu diperkuat.", "age": 53, "service_year": 8, "location": "PLANT MAJALENGKA", "sex": "L", "kelebihan_aspek": ["Kemampuan Berpikir Kreatif", "Perencanaan & Pengambilan Keputusan"], "kekurangan_aspek": []}, {"nama": "HENDRA WIDJAYAKUSUMA", "nik": "16000305", "jabatan": "CONSRUCTION MANAGEMENT SENIOR MANAGER", "job_level": "SENIOR MANAGER", "departement": "PROPERTY (KIEBER)", "division": "PROPERTY (KIEBER)", "pendidikan": "ENGINEERING - CIVIL", "iq_general": 108, "iq_analytic": 104, "iq_cat": "DI ATAS RATA-RATA", "kog_label": "0", "kb": 3, "km": 4, "kk": 4, "kp": 3, "kt": 3, "ko": 3, "lm": 3, "le": 3, "lpl": 4, "la": 2, "kinerja_label": "OPERASIONAL CUKUP", "lead_label": "1", "disc": "DC", "disc_grp": "D", "lead_adapt": "Average Leadership Adaptability", "fit": 0.75, "rek": "DIPERTIMBANGKAN", "status": "COMPLETED", "txt_kognitif": "", "txt_kinerja": "", "txt_lead": "", "txt_rekomendasi": "", "txt_pengembangan": "", "txt_risiko": "", "txt_highlight": "", "age": 40, "service_year": 9, "location": "HO KIEBER", "sex": "L", "kelebihan_aspek": ["Kemampuan Pemecahan Masalah", "Kemampuan Berpikir Kreatif", "Perencanaan & Pengambilan Keputusan"], "kekurangan_aspek": ["Adaptasi terhadap Perubahan"]}, {"nama": "IRWAN FEBRIANTORO", "nik": "26000015", "jabatan": "VICE PRESIDENT OF GLOBAL MANUFACTURE", "job_level": "VICE PRESIDENT", "departement": "MANUFACTURE", "division": "MANUFACTURE", "pendidikan": "PHARMACHIST (PROFESSION)", "iq_general": 113, "iq_analytic": 105, "iq_cat": "DI ATAS RATA-RATA", "kog_label": "0", "kb": 3, "km": 4, "kk": 3, "kp": 3, "kt": 4, "ko": 3, "lm": 3, "le": 3, "lpl": 4, "la": 2, "kinerja_label": "OPERASIONAL CUKUP", "lead_label": "1", "disc": "CD", "disc_grp": "C", "lead_adapt": "Average Leadership Adaptability", "fit": 0.7, "rek": "DIPERTIMBANGKAN", "status": "COMPLETED", "txt_kognitif": "Dari aspek kognitif, Pak Irwan menunjukkan kemampuan yang cukup baik dalam menganalisa permasalahan kerja serta mencari solusi yang bersifat praktis dan operasional. Beliau juga cukup mampu melihat peluang perbaikan kerja dan menunjukkan pendekatan berpikir yang cukup fleksibel dalam memahami situasi kerja. Selain itu, dorongan kerja dan orientasi hasil yang dimiliki cukup mendukung kecepatan respons dan penyelesaian pekerjaan dalam situasi operasional, meskipun pada situasi yang lebih kompleks kedalaman analisa dan konsistensi pengambilan keputusan masih dapat lebih ditingkatkan.", "txt_kinerja": "Dari aspek kinerja, Pak Irwan menunjukkan dorongan pencapaian dan orientasi hasil yang cukup kuat dalam mendukung pencapaian target operasional. Beliau cenderung cepat mengambil tindakan, tegas dalam menentukan arah kerja, serta cukup mampu menghadapi dinamika dan tekanan operasional. Namun, karena pendekatan kerja yang sangat berorientasi pada hasil dan kecepatan, fleksibilitas dalam menyesuaikan pendekatan kerja terhadap perubahan maupun dinamika koordinasi yang kompleks masih perlu lebih dikembangkan agar efektivitas kerja dapat berjalan lebih optimal.", "txt_lead": "Dari aspek kerja sama dan kepemimpinan, Pak Irwan menunjukkan kecenderungan memimpin dengan pendekatan yang tegas, cepat, dan berorientasi pada pencapaian target operasional. Beliau cukup mampu mengambil keputusan serta mengarahkan pelaksanaan kerja dalam situasi bisnis dan operasional yang dinamis. Namun, karena pendekatannya cenderung direct, task oriented, dan lebih nyaman dengan arah kerja yang jelas, fleksibilitas dalam menghadapi perbedaan pendekatan, perubahan yang cepat, maupun dinamika kerja yang ambigu masih perlu lebih dikembangkan agar efektivitas kolaborasi lintas fungsi dan driving organisasi secara global dapat berjalan lebih optimal.", "txt_rekomendasi": "Secara umum, Pak Irwan DIPERTIMBANGKAN untuk posisi VP Global Manufacture, terutama dari sisi orientasi hasil, ketegasan dalam pengambilan keputusan, kemampuan mengarahkan operasional, serta dorongan pencapaian yang cukup kuat. Profilnya mendukung untuk menghadapi dinamika operasional dan tuntutan eksekusi bisnis yang cepat.\n\nNamun demikian, untuk optimal pada posisi strategis global, masih perlu penguatan pada aspek strategic leadership, kedalaman analisa dalam pengambilan keputusan kompleks, serta kemampuan komunikasi, kolaborasi, dan pelibatan stakeholder lintas fungsi maupun lintas budaya agar efektivitas driving organisasi secara global dapat berjalan lebih optimal.", "txt_pengembangan": "Meningkatkan kedalaman analisa dalam pengambilan keputusan strategis, memperkuat pelibatan dan pengembangan tim, serta meningkatkan fleksibilitas komunikasi dan kolaborasi lintas fungsi maupun lintas budaya agar efektivitas leadership dalam mengelola organisasi global dapat berjalan lebih optimal.", "txt_risiko": "Kecenderungan yang sangat berorientasi pada hasil dan pengambilan keputusan cepat kemungkinan dapat mempengaruhi kedalaman analisa, pelibatan stakeholder, serta fleksibilitas komunikasi dalam mengelola dinamika organisasi dan kolaborasi lintas fungsi maupun lintas budaya pada level global.", "txt_highlight": "Kuat sebagai operational driver yang cepat, tegas, dan sangat berorientasi hasil, namun fleksibilitas terhadap perbedaan pendekatan dan perhatian terhadap detail masih perlu diperkuat.", "age": 41, "service_year": 0, "location": "WU TOWER", "sex": "L", "kelebihan_aspek": ["Kemampuan Pemecahan Masalah", "Ketangguhan Kerja", "Perencanaan & Pengambilan Keputusan"], "kekurangan_aspek": ["Adaptasi terhadap Perubahan"]}, {"nama": "JAELANI", "nik": "23010601", "jabatan": "VICE PRESIDENT OF PROJECT EXPANSION", "job_level": "VICE PRESIDENT", "departement": "PROJECT EXPANSION", "division": "PROJECT EXPANSION", "pendidikan": "AGROINDUSTRIAL", "iq_general": 107, "iq_analytic": 100, "iq_cat": "RATA-RATA", "kog_label": "1", "kb": 3, "km": 3, "kk": 4, "kp": 3, "kt": 3, "ko": 3, "lm": 3, "le": 3, "lpl": 4, "la": 3, "kinerja_label": "OPERASIONAL CUKUP", "lead_label": "1", "disc": "IDC", "disc_grp": "I", "lead_adapt": "High Leadership Adaptability", "fit": 0.75, "rek": "DIPERTIMBANGKAN", "status": "COMPLETED", "txt_kognitif": "", "txt_kinerja": "", "txt_lead": "", "txt_rekomendasi": "", "txt_pengembangan": "", "txt_risiko": "", "txt_highlight": "", "age": 39, "service_year": 2, "location": "WU TOWER", "sex": "L", "kelebihan_aspek": ["Kemampuan Berpikir Kreatif", "Perencanaan & Pengambilan Keputusan"], "kekurangan_aspek": []}, {"nama": "JULIAR JATI WALUYO", "nik": "3140004", "jabatan": "IMPROVEMENT ENGINEERING MANAGER", "job_level": "MANAGER", "departement": "IMPROVEMENT ENGINEERING", "division": "MANUFACTURE", "pendidikan": "ELECTRICAL ENGINEERING", "iq_general": 106, "iq_analytic": 101, "iq_cat": "RATA-RATA", "kog_label": "1", "kb": 3, "km": 3, "kk": 4, "kp": 3, "kt": 3, "ko": 3, "lm": 3, "le": 3, "lpl": 4, "la": 3, "kinerja_label": "OPERASIONAL CUKUP", "lead_label": "1", "disc": "DC", "disc_grp": "D", "lead_adapt": "Average Leadership Adaptability", "fit": 0.85, "rek": "DISARANKAN DENGAN PENGEMBANGAN", "status": "COMPLETED", "txt_kognitif": "Dari aspek kognitif, Pak Juliar menunjukkan kemampuan yang cukup baik dalam menganalisa permasalahan dan mencari alternatif solusi kerja secara praktis dan aplikatif. Beliau juga menunjukkan pola pikir yang cukup kreatif, aktif, dan terbuka dalam melihat peluang perbaikan maupun pengembangan cara kerja yang lebih efektif. Selain itu, dorongan pencapaian yang cukup baik mendukung dalam menghadapi tantangan kerja dan penyelesaian pekerjaan secara cukup adaptif dan operasional. Namun, dalam memahami situasi kerja yang lebih kompleks dan membutuhkan kedalaman analisa yang lebih strategis, penguatan pada aspek pemahaman dan keterkaitan antar proses kerja masih dapat lebih dikembangkan.", "txt_kinerja": "Dari aspek kinerja, Pak Juliar menunjukkan dorongan pencapaian dan orientasi kerja yang cukup baik dalam mendukung penyelesaian pekerjaan operasional. Beliau cenderung cukup adaptif terhadap perubahan dan dinamika kerja, aktif dalam menghadapi tantangan, serta cukup responsif dalam menangani permasalahan kerja secara praktis dan operasional. Selain itu, kemampuan menyesuaikan diri terhadap situasi kerja baru juga cukup mendukung efektivitas pelaksanaan kerja. Namun, karena kestabilan respons kerja dalam menghadapi tekanan relatif masih perlu diperkuat, konsistensi pelaksanaan kerja dan pengendalian emosi pada situasi kerja dengan tekanan tinggi masih perlu lebih dikembangkan agar efektivitas kerja dapat berjalan lebih optimal.", "txt_lead": "Dari aspek kerja sama dan kepemimpinan, Pak Juliar menunjukkan kecenderungan memimpin dengan pendekatan yang cukup tegas, adaptif, dan berorientasi pada penyelesaian pekerjaan serta pencapaian target operasional. Beliau cukup mampu mengarahkan pekerjaan, menghadapi dinamika kerja, serta menyesuaikan diri terhadap perubahan situasi operasional yang berkembang. Selain itu, keterbukaan terhadap perubahan dan pendekatan kerja baru juga cukup mendukung dalam menghadapi tantangan kerja maupun kebutuhan perbaikan proses kerja. Namun, karena pendekatannya cenderung cukup direct dan responsif terhadap tekanan kerja, pengelolaan emosi, konsistensi pendekatan kerja, serta monitoring detail pelaksanaan kerja masih perlu lebih diperkuat agar efektivitas koordinasi dan pengelolaan tim dapat berjalan lebih optimal.", "txt_rekomendasi": "Secara umum, Pak Juliar DISARANKAN DENGAN PENGEMBANGAN untuk posisi Improvement Engineering Manager, terutama dari sisi kemampuan adaptasi terhadap perubahan, keterbukaan terhadap ide maupun pendekatan kerja baru, kreativitas dalam melihat peluang perbaikan, serta keberanian menghadapi tantangan kerja operasional. Beliau juga cukup aktif dan responsif dalam menangani permasalahan kerja maupun mendorong penyelesaian kerja secara praktis dan aplikatif.\n\nNamun demikian, untuk optimal pada posisi ini, masih perlu penguatan pada aspek konsistensi implementasi, pengelolaan emosi dalam menghadapi tekanan kerja tinggi, serta monitoring detail pelaksanaan improvement agar efektivitas driving perbaikan proses dan koordinasi lintas fungsi dapat berjalan lebih optimal dan berkelanjutan.", "txt_pengembangan": "Meningkatkan konsistensi implementasi dan monitoring detail pelaksanaan improvement, memperkuat pengelolaan emosi dan kestabilan respons dalam menghadapi tekanan kerja, serta meningkatkan kemampuan koordinasi dan alignment lintas fungsi agar efektivitas driving improvement dan pengelolaan perubahan dapat berjalan lebih optimal dan berkelanjutan.", "txt_risiko": "Kecenderungan yang cukup cepat dan adaptif dalam menghadapi perubahan kemungkinan dapat mempengaruhi konsistensi implementasi, kestabilan respons dalam menghadapi tekanan kerja, serta monitoring detail pelaksanaan improvement, terutama pada situasi kerja yang membutuhkan pengendalian proses dan koordinasi lintas fungsi secara konsisten dan berkelanjutan.", "txt_highlight": "Kuat dalam kreativitas, adaptasi perubahan, dan kemampuan melihat peluang improvement, namun konsistensi implementasi dan kestabilan respons kerja masih perlu dikembangkan.", "age": 46, "service_year": 12, "location": "WU TOWER", "sex": "L", "kelebihan_aspek": ["Kemampuan Berpikir Kreatif", "Perencanaan & Pengambilan Keputusan"], "kekurangan_aspek": []}, {"nama": "DHUHA ABDUL AZIZ RAHMATULLAH", "nik": "25000994", "jabatan": "MANUFACTURING EXCELLENCE SENIOR MANAGER", "job_level": "SENIOR MANAGER", "departement": "IMPROVEMENT ENGINEERING", "division": "MANUFACTURE", "pendidikan": "ELECTRONIC & INSTRUMENTATION", "iq_general": 116, "iq_analytic": 117, "iq_cat": "DI ATAS RATA-RATA", "kog_label": "0", "kb": 4, "km": 4, "kk": 4, "kp": 2, "kt": 3, "ko": 2, "lm": 3, "le": 3, "lpl": 3, "la": 3, "kinerja_label": "OPERASIONAL KURANG BAGUS", "lead_label": "2", "disc": "IDC", "disc_grp": "I", "lead_adapt": "High Leadership Adaptability", "fit": 0.65, "rek": "TIDAK DISARANKAN", "status": "COMPLETED", "txt_kognitif": "", "txt_kinerja": "", "txt_lead": "", "txt_rekomendasi": "", "txt_pengembangan": "", "txt_risiko": "", "txt_highlight": "", "age": 34, "service_year": 0, "location": "WU TOWER", "sex": "L", "kelebihan_aspek": ["Kemampuan Berpikir & Pemahaman", "Kemampuan Pemecahan Masalah", "Kemampuan Berpikir Kreatif"], "kekurangan_aspek": ["Dorongan Berprestasi & Proaktif", "Kepemilikan terhadap Pekerjaan"]}, {"nama": "HERMAN BUDIANTO", "nik": "16000467", "jabatan": "SPAREPART CONTROLLER ASSISTANT MANAGER", "job_level": "ASSISSTANT MANAGER", "departement": "IMPROVEMENT ENGINEERING", "division": "MANUFACTURE", "pendidikan": "TEKNIK MESIN", "iq_general": 107, "iq_analytic": 92, "iq_cat": "RATA-RATA", "kog_label": "1", "kb": 3, "km": 3, "kk": 3, "kp": 3, "kt": 3, "ko": 3, "lm": 2, "le": 3, "lpl": 3, "la": 2, "kinerja_label": "OPERASIONAL CUKUP", "lead_label": "3", "disc": "CDS", "disc_grp": "C", "lead_adapt": "High Leadership Adaptability", "fit": 0.65, "rek": "TIDAK DISARANKAN", "status": "COMPLETED", "txt_kognitif": "", "txt_kinerja": "", "txt_lead": "", "txt_rekomendasi": "", "txt_pengembangan": "", "txt_risiko": "", "txt_highlight": "", "age": 34, "service_year": 9, "location": "WU TOWER", "sex": "L", "kelebihan_aspek": [], "kekurangan_aspek": ["Memimpin & Mengembangkan Bawahan", "Adaptasi terhadap Perubahan"]}, {"nama": "MUHAMMAD TAUFIQURRAHMAN", "nik": "24000556", "jabatan": "TECHNICAL PRODUCT MANAGER", "job_level": "MANAGER", "departement": "IMPROVEMENT ENGINEERING", "division": "MANUFACTURE", "pendidikan": "ENGINEERING - ELECTRIC", "iq_general": 110, "iq_analytic": 111, "iq_cat": "DI ATAS RATA-RATA", "kog_label": "0", "kb": 3, "km": 4, "kk": 4, "kp": 3, "kt": 3, "ko": 3, "lm": 4, "le": 3, "lpl": 4, "la": 3, "kinerja_label": "OPERASIONAL CUKUP", "lead_label": "1", "disc": "DCI", "disc_grp": "D", "lead_adapt": "High Leadership Adaptability", "fit": 0.9, "rek": "DISARANKAN DENGAN PENGEMBANGAN", "status": "COMPLETED", "txt_kognitif": "Dari aspek kognitif, Pak Taufiq menunjukkan kemampuan yang cukup baik dalam memahami informasi, situasi kerja, serta permasalahan operasional secara praktis dan aplikatif. Beliau juga cukup mampu menganalisa permasalahan dan menentukan alternatif solusi kerja secara efektif dengan pendekatan yang logis dan terarah. Selain itu, kemampuan berpikir kreatif dan dorongan pencapaian yang cukup tinggi mendukung dalam menghadapi tantangan kerja maupun pengembangan perbaikan proses kerja secara lebih inovatif dan adaptif.", "txt_kinerja": "Dari aspek kinerja, Pak Taufiq menunjukkan dorongan kerja, tanggung jawab, dan orientasi pencapaian yang cukup baik dalam mendukung penyelesaian pekerjaan operasional. Beliau cenderung cepat dalam mengambil tindakan, cukup adaptif menghadapi dinamika kerja, serta mampu menjaga penyelesaian pekerjaan secara aktif dan terarah. Selain itu, ketekunan dan kestabilan respons kerja yang relatif cukup baik juga mendukung efektivitas pelaksanaan kerja operasional. Namun, karena pendekatan kerja cenderung cepat dan sangat berorientasi pada penyelesaian tugas, konsistensi monitoring detail pelaksanaan kerja masih perlu lebih diperkuat agar efektivitas kerja dapat berjalan lebih optimal.", "txt_lead": "Dari aspek kerja sama dan kepemimpinan, Pak Taufiq menunjukkan kecenderungan memimpin dengan pendekatan yang tegas, cepat, dan berorientasi pada penyelesaian pekerjaan serta pencapaian target operasional. Beliau cukup mampu mengambil keputusan, mengarahkan pekerjaan, serta menjaga respons kerja pada situasi operasional yang dinamis. Selain itu, kemampuan adaptasi terhadap perubahan juga cukup mendukung dalam menghadapi tantangan kerja dan dinamika operasional. Namun, karena pendekatannya cenderung task oriented dan direct, fleksibilitas komunikasi, pelibatan interpersonal, serta konsistensi monitoring detail pelaksanaan kerja masih perlu lebih dikembangkan agar efektivitas koordinasi dan pengelolaan tim dapat berjalan lebih optimal.", "txt_rekomendasi": "Secara umum, individu cukup memiliki potensi untuk posisi Technical Product Manager, terutama dari sisi kemampuan berpikir praktis dan problem solving, kecepatan dalam mengambil keputusan, kemampuan driving pekerjaan, serta adaptasi terhadap dinamika kerja dan perubahan operasional. Beliau juga cukup mampu mengarahkan penyelesaian pekerjaan secara aktif dan terarah dalam mendukung kebutuhan operasional maupun pengembangan produk secara teknis.\n\nNamun demikian, untuk optimal pada posisi ini, masih perlu penguatan pada aspek monitoring detail pelaksanaan kerja, fleksibilitas komunikasi dan koordinasi lintas fungsi, serta pendekatan interpersonal dalam proses alignment stakeholder agar efektivitas pengelolaan produk, koordinasi teknis, dan driving implementasi dapat berjalan lebih optimal.", "txt_pengembangan": "Meningkatkan fleksibilitas komunikasi dan pelibatan bawahan dalam proses kerja, memperkuat konsistensi monitoring detail pelaksanaan operasional, serta meningkatkan pendekatan koordinasi dan kolaborasi lintas fungsi agar efektivitas leadership dan pengelolaan operasional dapat berjalan lebih optimal tanpa mengurangi ketegasan dan kecepatan kerja yang sudah dimiliki.", "txt_risiko": "Kecenderungan bekerja dengan pendekatan yang cepat, sangat task oriented, dan berfokus pada penyelesaian target operasional kemungkinan dapat mempengaruhi fleksibilitas komunikasi, pelibatan interpersonal, serta konsistensi monitoring detail pelaksanaan kerja, terutama pada situasi kerja yang membutuhkan koordinasi lintas fungsi dan pengelolaan tim secara lebih kolaboratif serta detail.", "txt_highlight": "Kuat dalam kecepatan bertindak, pengambilan keputusan, dan driving penyelesaian target operasional, namun fleksibilitas komunikasi, pelibatan bawahan, serta konsistensi monitoring detail pelaksanaan kerja masih perlu lebih dikembangkan.", "age": 32, "service_year": 1, "location": "WU TOWER", "sex": "L", "kelebihan_aspek": ["Kemampuan Pemecahan Masalah", "Kemampuan Berpikir Kreatif", "Memimpin & Mengembangkan Bawahan", "Perencanaan & Pengambilan Keputusan"], "kekurangan_aspek": []}, {"nama": "GARDA GIRI WARDANA", "nik": "23010749", "jabatan": "DIGITAL AUTOMATION ASSISTANT MANAGER", "job_level": "ASSISSTANT MANAGER", "departement": "IMPROVEMENT ENGINEERING", "division": "MANUFACTURE", "pendidikan": "ENGINEERING - ELECTRIC", "iq_general": 0, "iq_analytic": 0, "iq_cat": "", "kog_label": "", "kb": 0, "km": 0, "kk": 0, "kp": 0, "kt": 0, "ko": 0, "lm": 0, "le": 0, "lpl": 0, "la": 0, "kinerja_label": "", "lead_label": "", "disc": "", "disc_grp": "", "lead_adapt": "", "fit": 0.0, "rek": "TIDAK DISARANKAN", "status": "COMPLETED", "txt_kognitif": "", "txt_kinerja": "", "txt_lead": "", "txt_rekomendasi": "", "txt_pengembangan": "", "txt_risiko": "", "txt_highlight": "", "age": 28, "service_year": 2, "location": "WU TOWER", "sex": "L", "kelebihan_aspek": [], "kekurangan_aspek": []}, {"nama": "BARDO WENANG", "nik": "26000006", "jabatan": "FACTORY DIGITAL TRANSFORMATION MANAGER", "job_level": "MANAGER", "departement": "IMPROVEMENT ENGINEERING", "division": "MANUFACTURE", "pendidikan": "ENGINEERING - ELECTRIC", "iq_general": 127, "iq_analytic": 129, "iq_cat": "JAUH DI ATAS RATA-RATA", "kog_label": "0", "kb": 5, "km": 5, "kk": 5, "kp": 3, "kt": 3, "ko": 4, "lm": 4, "le": 3, "lpl": 5, "la": 3, "kinerja_label": "OPERASIONAL BAGUS", "lead_label": "1", "disc": "C", "disc_grp": "C", "lead_adapt": "Low Leadership Adaptability", "fit": 1.0, "rek": "DISARANKAN", "status": "COMPLETED", "txt_kognitif": "Dari aspek kognitif, Bardo menunjukkan kemampuan analisa dan pemecahan masalah yang cukup baik dengan pendekatan kerja yang sistematis dan terarah. Beliau mampu memahami permasalahan operasional serta mencari solusi yang bersifat praktis dan aplikatif. Selain itu, Bardo juga cukup mampu melihat peluang perbaikan kerja dan menunjukkan pola pikir yang cukup terbuka, meskipun pengembangan inovasi dan eksplorasi ide baru masih dapat lebih ditingkatkan.", "txt_kinerja": "Dari aspek kinerja, Bardo menunjukkan kepemilikan terhadap pekerjaan yang cukup baik dengan pendekatan kerja yang sistematis, analitis, dan terarah dalam mendukung proses transformasi digital di lingkungan pabrik. Beliau cukup mampu menjaga keteraturan pelaksanaan kerja, memahami kebutuhan perbaikan proses, serta menunjukkan keterbukaan terhadap perubahan dan pengembangan sistem kerja baru. Namun, dalam situasi kerja yang menuntut ritme eksekusi cepat dan dinamika perubahan yang tinggi, kecepatan penyesuaian dan pengambilan tindakan masih dapat lebih ditingkatkan agar implementasi transformasi digital dapat berjalan lebih optimal.", "txt_lead": "Dari aspek kerja sama dan kepemimpinan, Bardo cenderung menerapkan pendekatan kerja yang sistematis, terarah, dan berorientasi pada perbaikan proses kerja. Beliau cukup mampu menjaga koordinasi kerja serta mendukung implementasi perubahan secara terstruktur dalam proses transformasi digital. Selain itu, Bardo juga menunjukkan kepedulian yang cukup baik terhadap tanggung jawab dan kualitas pelaksanaan kerja. Namun, dalam situasi yang menuntut percepatan perubahan, pelibatan tim secara aktif, dan komunikasi yang lebih persuasif lintas fungsi, fleksibilitas pendekatan interpersonal dan kecepatan adaptasi kerja masih dapat lebih dikembangkan agar efektivitas kolaborasi dan implementasi perubahan dapat berjalan lebih optimal.", "txt_rekomendasi": "Secara umum, Bardo dapat DISARANKAN untuk posisi Factory Digital Transformation Manager, terutama dari sisi analitis, keteraturan kerja, ownership terhadap pekerjaan, serta keterbukaan terhadap perubahan dan pengembangan sistem kerja baru. Profilnya cukup mendukung untuk memahami proses operasional dan mendorong perbaikan kerja secara terstruktur.\n\nNamun, untuk optimal pada posisi ini, masih perlu penguatan pada agility, kecepatan adaptasi terhadap dinamika perubahan, serta kemampuan komunikasi dan influencing lintas fungsi, mengingat peran transformasi digital membutuhkan driving perubahan yang cepat, kolaboratif, dan adaptif di lingkungan operasional pabrik yang dinamis.", "txt_pengembangan": "Meningkatkan agility dalam menghadapi dinamika perubahan, memperkuat komunikasi dan kolaborasi lintas fungsi, serta meningkatkan keberanian dalam mendorong percepatan eksekusi agar proses transformasi digital dapat berjalan lebih efektif dan adaptif.", "txt_risiko": "Kecenderungan bekerja secara hati-hati dan komunikasi yang cenderung formal kemungkinan dapat mempengaruhi kecepatan adaptasi, efektivitas driving perubahan, serta engagement lintas fungsi dalam proses transformasi digital yang dinamis.", "txt_highlight": "kuat dalam analisa, pendekatan kerja yang sistematis, serta kemampuan melihat peluang improvement secara logis dan terstruktur, namun driving operasional, ketegasan dalam pengambilan keputusan cepat, dan keberanian mendorong perubahan secara agresif masih perlu lebih diperkuat.", "age": 35, "service_year": 0, "location": "WU TOWER", "sex": "L", "kelebihan_aspek": ["Kemampuan Berpikir & Pemahaman", "Kemampuan Pemecahan Masalah", "Kemampuan Berpikir Kreatif", "Kepemilikan terhadap Pekerjaan", "Memimpin & Mengembangkan Bawahan", "Perencanaan & Pengambilan Keputusan"], "kekurangan_aspek": []}, {"nama": "ADI KURNIADI", "nik": "3040052", "jabatan": "PLANT MANAGER MAJALENGKA - WAFER", "job_level": "MANAGER", "departement": "MANUFACTURE", "division": "MANUFACTURE", "pendidikan": "TEKNIK KIMIA", "iq_general": 109, "iq_analytic": 109, "iq_cat": "DI ATAS RATA-RATA", "kog_label": "0", "kb": 3, "km": 4, "kk": 4, "kp": 3, "kt": 3, "ko": 3, "lm": 2, "le": 3, "lpl": 3, "la": 2, "kinerja_label": "OPERASIONAL CUKUP", "lead_label": "3", "disc": "DC", "disc_grp": "D", "lead_adapt": "Average Leadership Adaptability", "fit": 0.65, "rek": "TIDAK DISARANKAN", "status": "COMPLETED", "txt_kognitif": "", "txt_kinerja": "", "txt_lead": "", "txt_rekomendasi": "", "txt_pengembangan": "", "txt_risiko": "", "txt_highlight": "", "age": 51, "service_year": 21, "location": "PLANT MAJALENGKA", "sex": "L", "kelebihan_aspek": ["Kemampuan Pemecahan Masalah", "Kemampuan Berpikir Kreatif"], "kekurangan_aspek": ["Memimpin & Mengembangkan Bawahan", "Adaptasi terhadap Perubahan"]}, {"nama": "SAMUEL SANDI KURNIAWAN", "nik": "25000471", "jabatan": "PLANT MANAGER - RANCAEKEK & CICALENGKA", "job_level": "MANAGER", "departement": "MANUFACTURE", "division": "MANUFACTURE", "pendidikan": "ENGINEERING - INDUSTRIAL", "iq_general": 98, "iq_analytic": 110, "iq_cat": "RATA-RATA", "kog_label": "1", "kb": 3, "km": 3, "kk": 3, "kp": 3, "kt": 3, "ko": 3, "lm": 3, "le": 3, "lpl": 4, "la": 3, "kinerja_label": "OPERASIONAL CUKUP", "lead_label": "1", "disc": "DC", "disc_grp": "D", "lead_adapt": "Average Leadership Adaptability", "fit": 0.75, "rek": "DIPERTIMBANGKAN", "status": "COMPLETED", "txt_kognitif": "Dari aspek kognitif, Pak Samuel menunjukkan kemampuan berpikir dan pemahaman kerja yang baik dengan kapasitas analisa yang cukup kuat, terutama dalam memahami informasi, pola kerja, serta hubungan antar proses secara logis dan sistematis. Beliau juga cukup mampu menganalisa permasalahan dan menentukan solusi kerja dengan pendekatan yang terarah dan berbasis pertimbangan yang rasional. Selain itu, kemampuan berpikir kreatif dan orientasi terhadap pencapaian yang dimiliki cukup mendukung dalam melihat peluang perbaikan serta efektivitas penyelesaian kerja pada situasi operasional maupun strategis.", "txt_kinerja": "Dari aspek kinerja, Pak Samuel menunjukkan dorongan kerja, tanggung jawab, dan orientasi pencapaian yang cukup baik dalam menjalankan pekerjaan operasional. Beliau cenderung mampu bekerja secara terarah, cukup cepat dalam mengambil keputusan, serta fokus menjaga efektivitas dan penyelesaian target kerja. Selain itu, pendekatan kerja yang ditunjukkan relatif cukup terkontrol dan tidak impulsif sehingga mendukung stabilitas pelaksanaan kerja operasional. Namun, karena perhatian terhadap detail pelaksanaan kerja tidak terlalu dominan, konsistensi monitoring dan pengendalian detail operasional masih perlu lebih diperkuat agar efektivitas kerja dapat berjalan lebih optimal.", "txt_lead": "Dari aspek kerja sama dan kepemimpinan, Pak Samuel menunjukkan kecenderungan memimpin dengan pendekatan yang tegas, terarah, dan berorientasi pada efektivitas kerja serta pencapaian target operasional. Beliau cukup mampu mengambil keputusan, mengarahkan pekerjaan, serta menjaga kontrol pelaksanaan kerja agar tetap berjalan sesuai kebutuhan operasional. Selain itu, kemampuan menjaga kerja sama dan penerimaan dalam kelompok juga cukup mendukung koordinasi kerja tim. Meskipun cukup kuat dalam mengarahkan pekerjaan, pendekatan kepemimpinan yang ditunjukkan cenderung tidak terlalu dominan secara personal dan lebih berfokus pada penyelesaian tugas serta efektivitas kerja. Namun, konsistensi dalam monitoring detail pelaksanaan kerja masih perlu lebih diperkuat agar efektivitas koordinasi dan pengelolaan tim dapat berjalan lebih optimal.", "txt_rekomendasi": "Secara umum, Pak Samuel DIPERTIMBANGKAN untuk posisi Plant Manager, terutama dari sisi kemampuan analisa, ketegasan dalam mengarahkan pekerjaan, pengambilan keputusan yang cukup cepat, serta kemampuan menjaga efektivitas dan kontrol operasional kerja. Beliau juga cukup mampu menjaga koordinasi kerja tim tanpa menunjukkan pendekatan yang terlalu dominan secara personal, sehingga cukup mendukung dalam pengelolaan operasional plant.\n\nNamun demikian, untuk optimal pada posisi ini, masih perlu penguatan pada aspek monitoring detail pelaksanaan operasional, fleksibilitas dalam menghadapi dinamika lintas fungsi yang kompleks, serta kemampuan driving perubahan agar efektivitas pengelolaan plant dan koordinasi operasional dapat berjalan lebih optimal.", "txt_pengembangan": "Meningkatkan konsistensi dalam monitoring dan pengendalian detail operasional, memperkuat kemampuan driving perubahan dan koordinasi lintas fungsi, serta meningkatkan fleksibilitas pendekatan kerja dalam menghadapi dinamika operasional plant yang kompleks agar efektivitas leadership dan pengelolaan operasional dapat berjalan lebih optimal.", "txt_risiko": "Kecenderungan yang lebih berorientasi pada efektivitas kerja dan penyelesaian target operasional kemungkinan dapat mempengaruhi konsistensi monitoring detail pelaksanaan kerja serta fleksibilitas dalam menghadapi dinamika koordinasi dan perubahan operasional yang kompleks pada level plant.", "txt_highlight": "Kuat dalam analisa, efektivitas operasional, dan pengambilan keputusan yang cukup terarah, namun konsistensi monitoring detail dan driving perubahan lintas fungsi masih perlu ditingkatkan.", "age": 45, "service_year": 1, "location": "PLANT RANCAEKEK", "sex": "L", "kelebihan_aspek": ["Perencanaan & Pengambilan Keputusan"], "kekurangan_aspek": []}, {"nama": "BARITA RAJA SIREGAR", "nik": "25001132", "jabatan": "PLANT MANAGER MAJALENGKA - SNACK, BISCUIT & CONFECTIONERY", "job_level": "MANAGER", "departement": "MANUFACTURE", "division": "MANUFACTURE", "pendidikan": "ENGINEERING - CHEMICAL", "iq_general": 107, "iq_analytic": 110, "iq_cat": "RATA-RATA", "kog_label": "1", "kb": 3, "km": 3, "kk": 3, "kp": 3, "kt": 3, "ko": 3, "lm": 3, "le": 3, "lpl": 4, "la": 2, "kinerja_label": "OPERASIONAL CUKUP", "lead_label": "1", "disc": "CD", "disc_grp": "C", "lead_adapt": "Average Leadership Adaptability", "fit": 0.7, "rek": "DIPERTIMBANGKAN", "status": "COMPLETED", "txt_kognitif": "Dari aspek kognitif, Pak Barita menunjukkan kemampuan penalaran dan pemahaman kerja yang cukup baik dalam memahami instruksi, alur kerja, serta hubungan antar proses secara praktis dan operasional. Beliau juga cukup mampu menganalisa permasalahan dan mencari solusi yang bersifat aplikatif dengan pendekatan berpikir yang logis dan berorientasi pada efektivitas kerja. Selain itu, Pak Barita cukup mampu melihat alternatif penyelesaian masalah dan peluang perbaikan proses, meskipun pendekatan yang digunakan cenderung lebih realistis dan berbasis pengalaman dibanding eksplorasi ide yang sangat inovatif.", "txt_kinerja": "Dari aspek kinerja, Pak Barita menunjukkan orientasi kerja dan tanggung jawab yang cukup baik dalam mendukung penyelesaian pekerjaan operasional. Beliau cenderung fokus pada efektivitas pelaksanaan kerja, cukup cepat dalam mengambil tindakan, serta mampu menjaga kontrol terhadap proses kerja agar tetap berjalan sesuai target dan kebutuhan operasional. Selain itu, beliau juga cukup mampu bekerja secara stabil dalam menghadapi tekanan kerja, meskipun konsistensi dalam menjalankan pekerjaan yang bersifat rutin dan detail masih dapat lebih diperkuat agar efektivitas kerja dapat berjalan lebih optimal.", "txt_lead": "Dari aspek kerja sama dan kepemimpinan, Pak Barita menunjukkan kecenderungan memimpin dengan pendekatan yang tegas, terarah, dan berorientasi pada kontrol operasional. Beliau cukup mampu mengarahkan pekerjaan serta menjaga pelaksanaan kerja tetap berjalan sesuai target dan kebutuhan operasional dengan sikap kerja yang relatif stabil dalam menghadapi tekanan kerja. Meskipun cukup kuat dalam mengontrol pekerjaan, pendekatan kepemimpinan yang ditunjukkan cenderung lebih berfokus pada pengendalian proses kerja dibanding dominasi secara personal. Selain itu, dalam menghadapi perubahan dan perbedaan, beliau cenderung cukup mampu menyesuaikan diri terhadap perubahan operasional yang masih terarah dan jelas. Namun, karena pendekatannya cenderung task oriented dan direct, pelibatan bawahan, fleksibilitas komunikasi, pendekatan interpersonal, serta adaptasi pada dinamika kerja yang membutuhkan penyesuaian cepat dan kolaboratif masih perlu lebih dikembangkan agar koordinasi dan efektivitas kerja tim dapat berjalan lebih optimal.", "txt_rekomendasi": "Secara umum, Pak Barita DIPERTIMBANGKAN untuk posisi Plant Manager, terutama dari sisi ketegasan dalam mengontrol operasional, kemampuan mengarahkan pekerjaan, pengambilan keputusan yang cukup cepat, serta fokus terhadap efektivitas pelaksanaan kerja dan pencapaian target operasional. Beliau juga menunjukkan kestabilan kerja yang cukup baik dalam menghadapi tekanan operasional plant.\n\nNamun demikian, untuk optimal pada posisi ini, masih perlu penguatan pada aspek pelibatan dan pengembangan bawahan, fleksibilitas komunikasi, serta kemampuan membangun kolaborasi lintas fungsi agar efektivitas kepemimpinan dan pengelolaan operasional plant dapat berjalan lebih seimbang dan optimal.", "txt_pengembangan": "Meningkatkan fleksibilitas komunikasi dan pelibatan bawahan dalam proses kerja, memperkuat kemampuan kolaborasi lintas fungsi, serta meningkatkan konsistensi dalam menjalankan pengelolaan operasional yang bersifat rutin dan detail agar efektivitas kepemimpinan dan pengelolaan plant dapat berjalan lebih optimal.", "txt_risiko": "Kecenderungan yang cukup berorientasi pada kontrol operasional dan penyelesaian tugas kemungkinan dapat mempengaruhi fleksibilitas komunikasi, pelibatan bawahan, serta efektivitas kolaborasi lintas fungsi, terutama pada situasi kerja yang membutuhkan pendekatan interpersonal dan koordinasi yang lebih adaptif.", "txt_highlight": "Kuat dalam menjaga stabilitas dan kontrol operasional kerja secara konsisten, namun fleksibilitas komunikasi dan adaptasi pada dinamika kerja kolaboratif masih perlu dikembangkan.", "age": 37, "service_year": 0, "location": "PLANT MAJALENGKA", "sex": "L", "kelebihan_aspek": ["Perencanaan & Pengambilan Keputusan"], "kekurangan_aspek": ["Adaptasi terhadap Perubahan"]}, {"nama": "TEGUH PAMUJI", "nik": "3130832", "jabatan": "PRODUCTION ENGINEERING MANAGER PLANT CICALENGKA", "job_level": "MANAGER", "departement": "PRODUCTION", "division": "MANUFACTURE", "pendidikan": "TEKNIK ELEKTRO", "iq_general": 104, "iq_analytic": 89, "iq_cat": "RATA-RATA", "kog_label": "1", "kb": 3, "km": 3, "kk": 3, "kp": 2, "kt": 3, "ko": 3, "lm": 3, "le": 3, "lpl": 3, "la": 3, "kinerja_label": "OPERASIONAL KURANG BAGUS", "lead_label": "2", "disc": "CS", "disc_grp": "C", "lead_adapt": "Average Leadership Adaptability", "fit": 0.7, "rek": "DIPERTIMBANGKAN", "status": "COMPLETED", "txt_kognitif": "", "txt_kinerja": "", "txt_lead": "", "txt_rekomendasi": "", "txt_pengembangan": "", "txt_risiko": "", "txt_highlight": "", "age": 44, "service_year": 12, "location": "PLANT CICALENGKA", "sex": "L", "kelebihan_aspek": [], "kekurangan_aspek": ["Dorongan Berprestasi & Proaktif"]}, {"nama": "DIAR ADIWARA", "nik": "16000232", "jabatan": "MAINTENANCE MANAGER MAJALENGKA - SNACK, BISCUIT & CONFECTIONERY", "job_level": "MANAGER", "departement": "MAINTENANCE", "division": "MANUFACTURE", "pendidikan": "TEKNIK ELEKTRO", "iq_general": 0, "iq_analytic": 0, "iq_cat": "", "kog_label": "", "kb": 0, "km": 0, "kk": 0, "kp": 0, "kt": 0, "ko": 0, "lm": 0, "le": 0, "lpl": 0, "la": 0, "kinerja_label": "", "lead_label": "", "disc": "", "disc_grp": "", "lead_adapt": "", "fit": 0.0, "rek": "TIDAK DISARANKAN", "status": "NOT COMPLETED", "txt_kognitif": "", "txt_kinerja": "", "txt_lead": "", "txt_rekomendasi": "", "txt_pengembangan": "", "txt_risiko": "", "txt_highlight": "", "age": 47, "service_year": 9, "location": "PLANT MAJALENGKA", "sex": "L", "kelebihan_aspek": [], "kekurangan_aspek": []}, {"nama": "RICHI HELFIZ", "nik": "17000111", "jabatan": "PRODUCTION MANAGER MAJALENGKA - WAFER", "job_level": "MANAGER", "departement": "PRODUCTION", "division": "MANUFACTURE", "pendidikan": "TEKNIK MESIN", "iq_general": 111, "iq_analytic": 102, "iq_cat": "DI ATAS RATA-RATA", "kog_label": "1", "kb": 3, "km": 3, "kk": 3, "kp": 3, "kt": 3, "ko": 3, "lm": 3, "le": 3, "lpl": 3, "la": 4, "kinerja_label": "OPERASIONAL CUKUP", "lead_label": "1", "disc": "DI", "disc_grp": "D", "lead_adapt": "Average Leadership Adaptability", "fit": 0.8, "rek": "DISARANKAN DENGAN PENGEMBANGAN", "status": "COMPLETED", "txt_kognitif": "", "txt_kinerja": "", "txt_lead": "", "txt_rekomendasi": "", "txt_pengembangan": "", "txt_risiko": "", "txt_highlight": "", "age": 43, "service_year": 9, "location": "PLANT MAJALENGKA", "sex": "L", "kelebihan_aspek": ["Adaptasi terhadap Perubahan"], "kekurangan_aspek": []}, {"nama": "FIQI FERDIAN", "nik": "24000176", "jabatan": "PRODUCTION MANAGER", "job_level": "MANAGER", "departement": "PRODUCTION", "division": "MANUFACTURE", "pendidikan": "FOOD TECHNOLOGY", "iq_general": 114, "iq_analytic": 106, "iq_cat": "DI ATAS RATA-RATA", "kog_label": "0", "kb": 3, "km": 4, "kk": 4, "kp": 3, "kt": 3, "ko": 3, "lm": 3, "le": 3, "lpl": 4, "la": 3, "kinerja_label": "OPERASIONAL CUKUP", "lead_label": "1", "disc": "DC", "disc_grp": "D", "lead_adapt": "Average Leadership Adaptability", "fit": 0.85, "rek": "DISARANKAN DENGAN PENGEMBANGAN", "status": "COMPLETED", "txt_kognitif": "Dari aspek kognitif, Pak Fiqi menunjukkan kemampuan yang cukup baik dalam memahami informasi, situasi kerja, serta hubungan antar proses operasional secara praktis dan aplikatif. Beliau juga cukup mampu menganalisa permasalahan dan menentukan solusi kerja dengan pendekatan yang logis, cepat, dan berorientasi pada penyelesaian masalah. Selain itu, kemampuan berpikir kreatif dan orientasi pencapaian yang cukup baik mendukung dalam melihat peluang perbaikan maupun efektivitas penyelesaian kerja pada situasi operasional yang dinamis.", "txt_kinerja": "Dari aspek kinerja, Pak Fiqi menunjukkan dorongan kerja, tanggung jawab, dan orientasi pencapaian yang cukup baik dalam mendukung penyelesaian pekerjaan operasional. Beliau cenderung cepat dalam mengambil tindakan, cukup fokus pada pencapaian target kerja, serta cukup mampu menjaga penyelesaian pekerjaan secara konsisten. Namun, karena pendekatan kerja yang cenderung cepat dan berorientasi pada tindakan, konsistensi monitoring detail pelaksanaan kerja serta kestabilan respons dalam menghadapi tekanan kerja masih perlu lebih diperkuat agar efektivitas pelaksanaan kerja dapat berjalan lebih optimal.", "txt_lead": "Dari aspek kerja sama dan kepemimpinan, Pak Fiqi menunjukkan kecenderungan memimpin dengan pendekatan yang tegas, cepat, dan berorientasi pada penyelesaian pekerjaan serta pencapaian target operasional. Beliau cukup mampu mengarahkan pekerjaan dan menjaga respons kerja pada situasi operasional yang dinamis. Meskipun gaya kerja dan komunikasinya cenderung direct serta task oriented, kemampuan menjaga hubungan kerja dan penerimaan dalam kelompok juga relatif cukup baik sehingga tetap mendukung koordinasi dan kerja sama tim. Namun, fleksibilitas komunikasi, pelibatan bawahan, serta pengelolaan emosi pada situasi tekanan tinggi masih perlu lebih dikembangkan agar efektivitas koordinasi dan leadership dapat berjalan lebih optimal.", "txt_rekomendasi": "Secara umum, Pak Fiqi DISARANKAN DENGAN PENGEMBANGAN untuk posisi Production Manager, terutama dari sisi kecepatan bertindak, kemampuan driving operasional, orientasi pencapaian target, serta kemampuan mengarahkan pekerjaan pada situasi operasional yang dinamis. Beliau juga cukup mampu menjaga kontrol pelaksanaan kerja dan koordinasi tim tanpa menunjukkan pendekatan yang terlalu dominan secara personal, sehingga cukup mendukung efektivitas pengelolaan operasional produksi.\n\nNamun demikian, untuk optimal pada posisi ini, masih perlu penguatan pada aspek fleksibilitas komunikasi, pelibatan bawahan dalam proses kerja, pengelolaan emosi pada situasi tekanan tinggi, serta konsistensi monitoring detail pelaksanaan operasional agar efektivitas leadership dan pengelolaan produksi dapat berjalan lebih optimal.", "txt_pengembangan": "", "txt_risiko": "", "txt_highlight": "", "age": 43, "service_year": 2, "location": "PLANT MAJALENGKA", "sex": "L", "kelebihan_aspek": ["Kemampuan Pemecahan Masalah", "Kemampuan Berpikir Kreatif", "Perencanaan & Pengambilan Keputusan"], "kekurangan_aspek": []}, {"nama": "TOMY PETER", "nik": "25001080", "jabatan": "PRODUCTION MANAGER - RANCAEKEK", "job_level": "MANAGER", "departement": "PRODUCTION", "division": "MANUFACTURE", "pendidikan": "ENGINEERING - MECHANICAL", "iq_general": 113, "iq_analytic": 125, "iq_cat": "DI ATAS RATA-RATA", "kog_label": "0", "kb": 3, "km": 4, "kk": 4, "kp": 3, "kt": 3, "ko": 3, "lm": 3, "le": 3, "lpl": 4, "la": 3, "kinerja_label": "OPERASIONAL CUKUP", "lead_label": "1", "disc": "D", "disc_grp": "D", "lead_adapt": "Low Leadership Adaptability", "fit": 0.85, "rek": "DISARANKAN DENGAN PENGEMBANGAN", "status": "COMPLETED", "txt_kognitif": "Dari aspek kognitif, Pak Tomy menunjukkan kemampuan berpikir dan pemahaman kerja yang cukup kuat dalam memahami informasi, pola masalah, serta situasi kerja secara praktis maupun operasional. Beliau juga cukup mampu menganalisa permasalahan dan menentukan solusi secara cepat dengan pendekatan yang praktis dan berorientasi pada tindakan. Selain itu, Pak Tomy menunjukkan pola pikir yang cukup aktif, cepat, dan terbuka dalam melihat peluang perbaikan maupun alternatif penyelesaian kerja, sehingga cukup mendukung efektivitas kerja pada situasi operasional yang dinamis.", "txt_kinerja": "Dari aspek kinerja, Pak Tomy menunjukkan kecenderungan bekerja secara cepat, aktif, dan berorientasi pada penyelesaian target kerja. Beliau cukup responsif dalam menghadapi dinamika operasional, mampu mengambil tindakan secara cepat, serta cukup percaya diri dalam menangani permasalahan kerja. Selain itu, kemampuan adaptasi terhadap perubahan kerja juga cukup mendukung efektivitas pelaksanaan operasional. Namun, karena pendekatan kerja yang sangat berorientasi pada tindakan dan kecepatan, konsistensi dalam monitoring detail, ketelitian pelaksanaan kerja, serta kedalaman pertimbangan pada situasi yang lebih kompleks masih perlu lebih diperkuat agar efektivitas kerja dapat berjalan lebih optimal.", "txt_lead": "Dari aspek kerja sama dan kepemimpinan, Pak Tomy menunjukkan kecenderungan memimpin dengan pendekatan yang tegas, cepat, dan berorientasi pada tindakan serta pencapaian target kerja. Beliau cukup mampu mengambil keputusan, mengarahkan pekerjaan, serta menjaga respons operasional pada situasi kerja yang dinamis. Selain itu, beliau juga cukup adaptif terhadap perubahan dan dinamika operasional yang membutuhkan respons cepat dan penyelesaian kerja secara langsung. Namun, karena pendekatannya cenderung sangat action oriented dan direct, pelibatan bawahan, fleksibilitas komunikasi, konsistensi dalam pengendalian detail pelaksanaan kerja, serta adaptasi pada proses koordinasi yang membutuhkan alignment lebih panjang masih perlu lebih dikembangkan agar efektivitas koordinasi dan pengelolaan tim dapat berjalan lebih optimal.", "txt_rekomendasi": "Secara umum, Pak Tomy DISARANKAN DENGAN PENGEMBANGAN untuk posisi Production Manager, terutama dari sisi kecepatan pengambilan keputusan, kemampuan mengarahkan operasional, keberanian mengambil tindakan, serta kemampuan menghadapi dinamika produksi yang cepat dan berubah-ubah. Beliau juga menunjukkan orientasi hasil dan respons kerja yang cukup baik dalam mendukung kelancaran operasional produksi.\n\nNamun demikian, untuk optimal pada posisi ini, masih perlu penguatan pada aspek konsistensi pengendalian detail operasional, monitoring pelaksanaan kerja, serta fleksibilitas komunikasi dan pelibatan tim agar efektivitas pengelolaan produksi dan koordinasi kerja dapat berjalan lebih stabil dan optimal.", "txt_pengembangan": "Meningkatkan konsistensi dalam monitoring dan pengendalian detail operasional, memperkuat fleksibilitas komunikasi dan pelibatan tim, serta meningkatkan kedalaman pertimbangan dalam pengambilan keputusan agar efektivitas pengelolaan produksi dapat berjalan lebih stabil dan optimal.", "txt_risiko": "Kecenderungan bekerja dengan tempo cepat, sangat action oriented, dan berfokus pada penyelesaian target kemungkinan dapat mempengaruhi konsistensi pengendalian detail operasional, kedalaman pertimbangan dalam pengambilan keputusan, serta fleksibilitas komunikasi dan pelibatan tim dalam pengelolaan operasional produksi yang kompleks.", "txt_highlight": "Kuat sebagai pemimpin yang cepat, tegas, dan sangat action oriented dalam mendorong penyelesaian target, namun pelibatan bawahan dan pengendalian detail operasional masih perlu dikembangkan.", "age": 31, "service_year": 0, "location": "PLANT RANCAEKEK", "sex": "L", "kelebihan_aspek": ["Kemampuan Pemecahan Masalah", "Kemampuan Berpikir Kreatif", "Perencanaan & Pengambilan Keputusan"], "kekurangan_aspek": []}, {"nama": "DZIKRI PRASETYA PRAMANA", "nik": "25001062", "jabatan": "MAINTENANCE MANAGER MAJALENGKA - WAFER", "job_level": "MANAGER", "departement": "MAINTENANCE", "division": "MANUFACTURE", "pendidikan": "ENGINEERING - AUTOMATION", "iq_general": 105, "iq_analytic": 102, "iq_cat": "RATA-RATA", "kog_label": "1", "kb": 3, "km": 3, "kk": 4, "kp": 3, "kt": 3, "ko": 3, "lm": 3, "le": 3, "lpl": 4, "la": 2, "kinerja_label": "OPERASIONAL CUKUP", "lead_label": "1", "disc": "CD", "disc_grp": "C", "lead_adapt": "Average Leadership Adaptability", "fit": 0.8, "rek": "DISARANKAN DENGAN PENGEMBANGAN", "status": "COMPLETED", "txt_kognitif": "Dari aspek kognitif, Dzikri Prasetya menunjukkan kemampuan yang cukup baik dalam memahami informasi, instruksi kerja, serta proses operasional secara cukup cepat. Beliau juga cukup mampu menganalisa permasalahan kerja dan mencari solusi yang bersifat praktis dengan tetap mempertimbangkan prosedur serta kondisi kerja sebelum mengambil keputusan. Selain itu, Dzikri cenderung menggunakan pendekatan kerja yang realistis dan terarah dalam melihat alternatif penyelesaian masalah maupun peluang perbaikan proses kerja.", "txt_kinerja": "Dari aspek kinerja, Dzikri menunjukkan dorongan kerja dan tanggung jawab yang cukup baik dalam menjalankan pekerjaan operasional. Beliau cenderung cukup tegas dalam mengarahkan pelaksanaan kerja, menjaga kontrol terhadap proses kerja, serta berorientasi pada penyelesaian tugas sesuai target yang ditetapkan. Namun, dalam situasi kerja dengan tekanan dan dinamika operasional yang tinggi, kestabilan emosi dan konsistensi ritme kerja masih perlu lebih diperkuat agar efektivitas pelaksanaan kerja dapat berjalan lebih optimal.", "txt_lead": "Dari aspek kerja sama dan kepemimpinan, Dzikri menunjukkan kecenderungan memimpin dengan pendekatan yang tegas, terarah, dan berorientasi pada kontrol pelaksanaan kerja. Beliau cukup mampu mengarahkan pekerjaan dan menjaga proses operasional tetap berjalan sesuai target dan prosedur kerja. Namun, karena pendekatannya cenderung lebih task oriented dan direct, fleksibilitas komunikasi, pelibatan bawahan, serta pengelolaan emosi dalam menghadapi dinamika kerja dan tekanan operasional masih perlu lebih dikembangkan agar koordinasi dan efektivitas kerja tim dapat berjalan lebih optimal.", "txt_rekomendasi": "Secara umum, Dzikri DISARANKAN DENGAN PENGEMBANGAN untuk posisi Maintenance Manager, terutama dari sisi ketegasan dalam mengontrol pekerjaan, kemampuan mengarahkan pelaksanaan kerja, serta orientasi terhadap penyelesaian masalah operasional. Profilnya juga cukup mendukung untuk menjaga pelaksanaan maintenance tetap berjalan terarah dan sesuai target operasional.\n\nNamun demikian, untuk optimal pada posisi ini, masih perlu penguatan pada pengelolaan emosi dalam tekanan kerja, fleksibilitas komunikasi, serta pelibatan dan koordinasi tim agar efektivitas pengelolaan maintenance dan dinamika kerja operasional dapat berjalan lebih stabil dan optimal.", "txt_pengembangan": "Meningkatkan pengelolaan emosi dan fleksibilitas komunikasi dalam menghadapi tekanan operasional, memperkuat pelibatan serta koordinasi tim, serta meningkatkan konsistensi dalam menjaga stabilitas kerja agar efektivitas pengelolaan maintenance dapat berjalan lebih optimal.", "txt_risiko": "Kecenderungan memimpin dengan pendekatan yang cukup tegas dan berorientasi pada kontrol kerja kemungkinan dapat mempengaruhi fleksibilitas komunikasi, pelibatan bawahan, serta kestabilan pengelolaan emosi dalam menghadapi tekanan dan dinamika operasional maintenance yang tinggi.", "txt_highlight": "Kuat dalam menjaga kontrol pelaksanaan kerja, ketegasan operasional, dan konsistensi pencapaian target, namun fleksibilitas komunikasi, pendekatan interpersonal, serta adaptasi pada dinamika kerja yang membutuhkan kolaborasi tinggi masih perlu lebih dikembangkan.", "age": 32, "service_year": 0, "location": "PLANT MAJALENGKA", "sex": "L", "kelebihan_aspek": ["Kemampuan Berpikir Kreatif", "Perencanaan & Pengambilan Keputusan"], "kekurangan_aspek": ["Adaptasi terhadap Perubahan"]}, {"nama": "ASEP SAEPUL ROHMAN", "nik": "16000271", "jabatan": "PRODUCTION SUPERVISOR CICALENGKA KSNI", "job_level": "SUPERVISOR", "departement": "PRODUCTION", "division": "MANUFACTURE", "pendidikan": "OTOMOTIF", "iq_general": 101, "iq_analytic": 103, "iq_cat": "RATA-RATA", "kog_label": "1", "kb": 3, "km": 3, "kk": 3, "kp": 3, "kt": 3, "ko": 3, "lm": 3, "le": 3, "lpl": 3, "la": 2, "kinerja_label": "OPERASIONAL CUKUP", "lead_label": "2", "disc": "ID", "disc_grp": "I", "lead_adapt": "Average Leadership Adaptability", "fit": 0.75, "rek": "DIPERTIMBANGKAN", "status": "COMPLETED", "txt_kognitif": "", "txt_kinerja": "", "txt_lead": "", "txt_rekomendasi": "", "txt_pengembangan": "", "txt_risiko": "", "txt_highlight": "", "age": 35, "service_year": 17, "location": "PLANT CICALENGKA", "sex": "L", "kelebihan_aspek": [], "kekurangan_aspek": ["Adaptasi terhadap Perubahan"]}, {"nama": "FEBBY SURYANI", "nik": "3120181", "jabatan": "QC MANAGER CICALENGKA - RANCAEKEK", "job_level": "MANAGER", "departement": "QC", "division": "MANUFACTURE", "pendidikan": "KIMIA INDUSTRI", "iq_general": 103, "iq_analytic": 88, "iq_cat": "RATA-RATA", "kog_label": "1", "kb": 3, "km": 3, "kk": 3, "kp": 3, "kt": 3, "ko": 4, "lm": 2, "le": 3, "lpl": 4, "la": 2, "kinerja_label": "OPERASIONAL BAGUS", "lead_label": "2", "disc": "CD", "disc_grp": "C", "lead_adapt": "Average Leadership Adaptability", "fit": 0.7, "rek": "DIPERTIMBANGKAN", "status": "COMPLETED", "txt_kognitif": "", "txt_kinerja": "", "txt_lead": "", "txt_rekomendasi": "", "txt_pengembangan": "", "txt_risiko": "", "txt_highlight": "", "age": 40, "service_year": 14, "location": "PLANT CICALENGKA", "sex": "P", "kelebihan_aspek": ["Kepemilikan terhadap Pekerjaan", "Perencanaan & Pengambilan Keputusan"], "kekurangan_aspek": ["Memimpin & Mengembangkan Bawahan", "Adaptasi terhadap Perubahan"]}, {"nama": "RIKI FERDIANSYAH", "nik": "17000011", "jabatan": "QA MANAGER", "job_level": "MANAGER", "departement": "QA", "division": "MANUFACTURE", "pendidikan": "REKAM MEDIS", "iq_general": 107, "iq_analytic": 100, "iq_cat": "RATA-RATA", "kog_label": "1", "kb": 3, "km": 3, "kk": 3, "kp": 3, "kt": 3, "ko": 4, "lm": 2, "le": 3, "lpl": 4, "la": 2, "kinerja_label": "OPERASIONAL BAGUS", "lead_label": "2", "disc": "CD", "disc_grp": "C", "lead_adapt": "Average Leadership Adaptability", "fit": 0.7, "rek": "DIPERTIMBANGKAN", "status": "COMPLETED", "txt_kognitif": "", "txt_kinerja": "", "txt_lead": "", "txt_rekomendasi": "", "txt_pengembangan": "", "txt_risiko": "", "txt_highlight": "", "age": 37, "service_year": 9, "location": "PLANT CICALENGKA", "sex": "L", "kelebihan_aspek": ["Kepemilikan terhadap Pekerjaan", "Perencanaan & Pengambilan Keputusan"], "kekurangan_aspek": ["Memimpin & Mengembangkan Bawahan", "Adaptasi terhadap Perubahan"]}, {"nama": "DICKY NOVRIANSYAH", "nik": "24000495", "jabatan": "HSE MANAGER", "job_level": "MANAGER", "departement": "HSE", "division": "MANUFACTURE", "pendidikan": "ENGINEERING - MECHANICAL", "iq_general": 110, "iq_analytic": 114, "iq_cat": "DI ATAS RATA-RATA", "kog_label": "0", "kb": 3, "km": 4, "kk": 4, "kp": 3, "kt": 3, "ko": 3, "lm": 3, "le": 3, "lpl": 4, "la": 3, "kinerja_label": "OPERASIONAL CUKUP", "lead_label": "1", "disc": "SCD", "disc_grp": "S", "lead_adapt": "High Leadership Adaptability", "fit": 0.85, "rek": "DISARANKAN DENGAN PENGEMBANGAN", "status": "COMPLETED", "txt_kognitif": "Dari aspek kognitif, Pak Dicky menunjukkan kemampuan yang cukup baik dalam memahami situasi kerja serta menganalisa permasalahan dengan pendekatan yang praktis dan aplikatif. Beliau juga cukup mampu menentukan alternatif solusi kerja secara efektif dengan pola pikir yang aktif dan terbuka terhadap berbagai kemungkinan perbaikan. Selain itu, kemampuan berpikir kreatif dan dorongan pencapaian yang cukup tinggi mendukung dalam menghadapi tantangan kerja maupun pengembangan solusi kerja secara lebih inovatif dan adaptif.", "txt_kinerja": "Dari aspek kinerja, Pak Dicky menunjukkan dorongan kerja dan ketekunan yang cukup baik dalam mendukung penyelesaian pekerjaan operasional. Beliau juga cukup mampu menjaga tanggung jawab dan kepemilikan terhadap pekerjaan serta cukup adaptif dalam menghadapi dinamika kerja dan perubahan situasi operasional. Selain itu, fleksibilitas dalam menyesuaikan ritme kerja cukup mendukung efektivitas pelaksanaan kerja. Namun, pada situasi kerja dengan tekanan tinggi, ketangguhan dan konsistensi respons kerja masih perlu lebih diperkuat agar efektivitas pelaksanaan kerja dapat berjalan lebih optimal", "txt_lead": "Dari aspek kerja sama dan kepemimpinan, Pak Dicky menunjukkan kecenderungan bekerja sama dengan pendekatan yang cukup fleksibel dan adaptif terhadap dinamika kerja maupun perubahan situasi operasional. Beliau juga cukup mampu mengarahkan pekerjaan serta menjaga koordinasi kerja tetap berjalan sesuai kebutuhan operasional. Selain itu, pendekatan kepemimpinan yang ditunjukkan cenderung tidak terlalu dominan secara personal dan lebih berfokus pada penyelesaian pekerjaan serta keteraturan pelaksanaan kerja. Namun, pada situasi kerja dengan tekanan tinggi, pengelolaan emosi dan konsistensi respons dalam menghadapi dinamika kerja maupun koordinasi tim masih perlu lebih diperkuat agar efektivitas leadership dan kerja sama tim dapat berjalan lebih optimal.", "txt_rekomendasi": "Secara umum, Pak Dicky DISARANKAN DENGAN PENGEMBANGAN untuk posisi Manager HSE, terutama dari sisi kemampuan adaptasi terhadap perubahan, keteraturan pelaksanaan kerja, serta tanggung jawab dan konsistensi dalam menjalankan pekerjaan operasional. Beliau juga cukup mendukung dalam menjaga implementasi prosedur kerja dan koordinasi operasional yang dinamis.\n\nNamun demikian, untuk optimal pada posisi ini, masih perlu penguatan pada aspek ketangguhan dan kestabilan respons dalam menghadapi tekanan kerja tinggi, pengelolaan emosi pada situasi kritis, serta ketegasan dalam driving implementasi disiplin dan kepatuhan HSE agar efektivitas leadership dan pengelolaan fungsi HSE dapat berjalan lebih optimal.", "txt_pengembangan": "Meningkatkan ketangguhan dan kestabilan respons dalam menghadapi tekanan kerja maupun situasi kritis, memperkuat ketegasan dalam driving implementasi disiplin dan kepatuhan kerja, serta meningkatkan pengelolaan emosi dan konsistensi koordinasi agar efektivitas leadership pada fungsi HSE dapat berjalan lebih optimal.", "txt_risiko": "Kecenderungan yang cukup adaptif dan fleksibel dalam bekerja kemungkinan masih dapat dipengaruhi oleh kestabilan respons dan pengelolaan emosi pada situasi kerja dengan tekanan tinggi, sehingga konsistensi ketegasan dalam driving implementasi disiplin, kepatuhan, serta pengendalian operasional HSE masih perlu lebih diperkuat agar efektivitas pelaksanaan fungsi kerja dapat berjalan lebih optimal.", "txt_highlight": "Kuat dalam adaptasi kerja, konsistensi pelaksanaan operasional, dan tanggung jawab kerja, namun ketangguhan dan kestabilan respons saat tekanan tinggi masih perlu diperkuat.", "age": 34, "service_year": 1, "location": "PLANT RANCAEKEK", "sex": "L", "kelebihan_aspek": ["Kemampuan Pemecahan Masalah", "Kemampuan Berpikir Kreatif", "Perencanaan & Pengambilan Keputusan"], "kekurangan_aspek": []}, {"nama": "ANTHONY PRODENIANTA", "nik": "25000167", "jabatan": "QC MANAGER MAJALENGKA - WAFER", "job_level": "MANAGER", "departement": "QC", "division": "MANUFACTURE", "pendidikan": "CHEMISTRY", "iq_general": 119, "iq_analytic": 120, "iq_cat": "DI ATAS RATA-RATA", "kog_label": "0", "kb": 4, "km": 4, "kk": 4, "kp": 2, "kt": 3, "ko": 4, "lm": 3, "le": 3, "lpl": 5, "la": 2, "kinerja_label": "OPERASIONAL CUKUP", "lead_label": "1", "disc": "CS", "disc_grp": "C", "lead_adapt": "Average Leadership Adaptability", "fit": 0.8, "rek": "DISARANKAN DENGAN PENGEMBANGAN", "status": "COMPLETED", "txt_kognitif": "Dari aspek kognitif, Pak Anthony menunjukkan kemampuan berpikir dan pemahaman kerja yang sangat baik dengan kapasitas analisa yang kuat dalam memahami informasi, pola masalah, serta hubungan antar proses kerja secara logis dan strategis. Beliau juga sangat mampu menganalisa permasalahan dan menentukan solusi secara efektif dengan pendekatan yang cepat, sistematis, dan berbasis pertimbangan yang matang. Selain itu, kemampuan berpikir kreatif, fleksibilitas dalam melihat alternatif solusi, serta orientasi pencapaian yang tinggi cukup mendukung dalam menghadapi tantangan kerja, pengambilan keputusan, maupun pengembangan perbaikan kerja secara inovatif dan strategis.", "txt_kinerja": "Dari aspek kinerja, Pak Anthony menunjukkan dorongan kerja, orientasi pencapaian, dan tanggung jawab yang cukup baik dalam menjalankan pekerjaan secara sistematis dan terstruktur. Beliau cenderung menjaga kualitas, ketepatan, serta konsistensi pelaksanaan kerja dengan pendekatan yang hati-hati dan terkontrol. Selain itu, kemampuan analisa dan perhatian terhadap detail cukup mendukung efektivitas dalam menjaga standar dan kualitas hasil kerja. Namun, karena pendekatan kerja cenderung sangat berhati-hati dan berorientasi pada kontrol proses, pada situasi kerja yang menuntut respons sangat cepat dan perubahan yang dinamis kemungkinan membutuhkan waktu penyesuaian agar efektivitas pelaksanaan kerja tetap berjalan optimal.", "txt_lead": "Dari aspek kerja sama dan kepemimpinan, Pak Anthony menunjukkan kecenderungan memimpin dengan pendekatan yang sistematis, terstruktur, dan berorientasi pada kualitas serta kontrol proses kerja. Beliau cukup mampu mengarahkan pekerjaan dan menjaga pelaksanaan kerja tetap berjalan sesuai standar, prosedur, dan target yang ditetapkan. Pendekatan kepemimpinan yang ditunjukkan juga cenderung lebih fokus pada pengelolaan proses dan ketepatan kerja dibanding dominasi secara personal. Namun, karena pendekatannya relatif hati-hati, formal, dan berorientasi pada kontrol, fleksibilitas komunikasi, kecepatan pengambilan keputusan, serta adaptasi terhadap perubahan dan dinamika kerja yang cepat masih perlu lebih dikembangkan agar efektivitas koordinasi dan leadership dapat berjalan lebih optimal.", "txt_rekomendasi": "Secara umum, Pak Anthony DISARANKAN DENGAN PENGEMBANGAN untuk posisi QC Manager, terutama dari sisi kemampuan analisa, perhatian terhadap detail, kontrol kualitas, pendekatan kerja yang sistematis, serta orientasi terhadap standar dan ketepatan proses kerja. Profilnya juga cukup mendukung dalam menjaga konsistensi implementasi quality control, kepatuhan prosedur, serta pengendalian kualitas operasional secara terstruktur.\n\nNamun demikian, untuk optimal pada posisi ini, masih perlu penguatan pada aspek fleksibilitas komunikasi, kecepatan pengambilan keputusan dalam situasi operasional yang dinamis, serta adaptasi terhadap perubahan maupun kebutuhan koordinasi lintas fungsi agar efektivitas leadership dan pengelolaan fungsi QC dapat berjalan lebih optimal.", "txt_pengembangan": "Meningkatkan fleksibilitas komunikasi dan koordinasi lintas fungsi, memperkuat kecepatan pengambilan keputusan dalam situasi operasional yang dinamis, serta meningkatkan adaptasi terhadap perubahan agar efektivitas leadership dan pengelolaan fungsi QC dapat berjalan lebih optimal.", "txt_risiko": "Kecenderungan yang sangat berorientasi pada kontrol kualitas, ketepatan proses, dan pendekatan kerja yang hati-hati kemungkinan dapat mempengaruhi kecepatan pengambilan keputusan, fleksibilitas dalam menghadapi perubahan operasional, serta efektivitas koordinasi pada situasi kerja yang dinamis dan membutuhkan respons cepat lintas fungsi.", "txt_highlight": "Kuat dalam analisa, kualitas, dan pengendalian proses kerja secara sistematis, namun fleksibilitas terhadap perubahan dan kecepatan respons operasional masih perlu dikembangkan.", "age": 43, "service_year": 1, "location": "PLANT MAJALENGKA", "sex": "L", "kelebihan_aspek": ["Kemampuan Berpikir & Pemahaman", "Kemampuan Pemecahan Masalah", "Kemampuan Berpikir Kreatif", "Kepemilikan terhadap Pekerjaan", "Perencanaan & Pengambilan Keputusan"], "kekurangan_aspek": ["Dorongan Berprestasi & Proaktif", "Adaptasi terhadap Perubahan"]}, {"nama": "ALDO HERISKO WIRATAMA MANIK", "nik": "25000756", "jabatan": "HEAD OF QHSE", "job_level": "HEAD OF DEPARTEMENT", "departement": "QA & HSE", "division": "MANUFACTURE", "pendidikan": "PHARMACHIST (PROFESSION)", "iq_general": 96, "iq_analytic": 96, "iq_cat": "RATA-RATA", "kog_label": "1", "kb": 3, "km": 3, "kk": 3, "kp": 3, "kt": 3, "ko": 3, "lm": 3, "le": 3, "lpl": 3, "la": 3, "kinerja_label": "OPERASIONAL CUKUP", "lead_label": "2", "disc": "SC", "disc_grp": "S", "lead_adapt": "Average Leadership Adaptability", "fit": 0.65, "rek": "TIDAK DISARANKAN", "status": "NOT COMPLETED", "txt_kognitif": "Dari aspek kognitif, Pak Aldo menunjukkan kemampuan yang cukup baik dalam memahami informasi, situasi kerja, serta hubungan antar proses operasional secara praktis dan aplikatif. Beliau juga cukup mampu menganalisa permasalahan kerja dan mencari alternatif solusi dengan pendekatan yang logis dan operasional. Selain itu, kemampuan berpikir kreatif dan keterbukaan terhadap alternatif cara kerja baru cukup mendukung dalam melihat peluang perbaikan maupun penyelesaian masalah kerja secara lebih fleksibel dan efektif.", "txt_kinerja": "Dari aspek kinerja, Pak Aldo menunjukkan dorongan kerja, tanggung jawab, dan orientasi pencapaian yang cukup baik dalam menjalankan pekerjaan operasional. Beliau cenderung menjaga keteraturan pelaksanaan kerja, cukup konsisten dalam mengontrol proses kerja, serta mampu bekerja secara terarah dan sistematis dalam mendukung pencapaian target kerja. Namun, karena tempo kerja dan pengambilan keputusan cenderung lebih hati-hati, pada situasi kerja yang menuntut respons sangat cepat dan tekanan operasional tinggi kemungkinan membutuhkan waktu penyesuaian agar efektivitas pelaksanaan kerja tetap terjaga secara optimal.", "txt_lead": "Dari aspek kerja sama dan kepemimpinan, Pak Aldo menunjukkan kecenderungan memimpin dengan pendekatan yang terstruktur, cukup terarah, dan berorientasi pada kontrol proses kerja. Beliau cukup mampu mengarahkan pekerjaan serta menjaga pelaksanaan kerja tetap berjalan secara sistematis dan sesuai target operasional. Meskipun cukup kuat dalam mengontrol pekerjaan, pendekatan kepemimpinan yang ditunjukkan cenderung tidak terlalu dominan secara personal dan lebih berfokus pada pengelolaan proses kerja. Namun, karena pengambilan keputusan dan tempo kerja cenderung lebih hati-hati, pada situasi kerja yang sangat dinamis dan menuntut respons cepat beliau kemungkinan membutuhkan waktu penyesuaian agar efektivitas koordinasi dan pengambilan keputusan tetap berjalan optimal.", "txt_rekomendasi": "Secara umum, Pak Aldo TIDAK DISARANKAN untuk posisi Head of QHSE. Meski memiliki kekuatan pada aspek kontrol proses, keteraturan kerja, serta pendekatan kerja yang sistematis dan terarah sehingga cukup mendukung dalam menjaga implementasi fungsi QHSE secara konsisten. \n\nNamun demikian, apabila dikaitkan dengan tuntutan posisi Head of QHSE yang membutuhkan agility tinggi, kecepatan pengambilan keputusan, driving perubahan, ketangguhan menghadapi tekanan kerja, serta kemampuan adaptasi dan koordinasi lintas fungsi yang kuat, profil beliau saat ini masih menunjukkan kecenderungan lebih kuat pada stabilitas dan pengelolaan proses dibanding peran strategic driver pada level head function.", "txt_pengembangan": "Meningkatkan agility dan kecepatan pengambilan keputusan dalam menghadapi dinamika operasional, memperkuat kemampuan driving perubahan dan koordinasi lintas fungsi, serta meningkatkan ketangguhan dan fleksibilitas dalam menghadapi tekanan kerja maupun perubahan situasi agar efektivitas leadership pada level Head of QHSE dapat berjalan lebih optimal.", "txt_risiko": "Kecenderungan yang lebih kuat pada stabilitas, kontrol proses, dan pendekatan kerja yang hati-hati kemungkinan dapat mempengaruhi agility, kecepatan driving perubahan, serta efektivitas adaptasi dan pengambilan keputusan pada situasi kerja yang sangat dinamis, kompleks, dan membutuhkan koordinasi lintas fungsi secara cepat.", "txt_highlight": "Kuat dalam keteraturan, kontrol proses, dan pendekatan kerja yang sistematis, namun agility, driving perubahan, dan kecepatan respons pada dinamika tinggi masih perlu diperkuat.", "age": 41, "service_year": 0, "location": "PLANT RANCAEKEK", "sex": "L", "kelebihan_aspek": [], "kekurangan_aspek": []}, {"nama": "FEBIANTA OCTORA BANGUN", "nik": "26000214", "jabatan": "QC MANAGER MAJALENGKA - SNACK, BISCUIT & CONFECTIONERY", "job_level": "MANAGER", "departement": "QC", "division": "MANUFACTURE", "pendidikan": "PHARMACHIST (PROFESSION)", "iq_general": 118, "iq_analytic": 103, "iq_cat": "DI ATAS RATA-RATA", "kog_label": "0", "kb": 4, "km": 4, "kk": 4, "kp": 2, "kt": 3, "ko": 3, "lm": 3, "le": 3, "lpl": 4, "la": 2, "kinerja_label": "OPERASIONAL KURANG BAGUS", "lead_label": "1", "disc": "C", "disc_grp": "C", "lead_adapt": "Low Leadership Adaptability", "fit": 0.75, "rek": "DIPERTIMBANGKAN", "status": "COMPLETED", "txt_kognitif": "Dari aspek kognitif, Febianta Octora menunjukkan kemampuan yang cukup baik dalam memahami proses kerja, prosedur, serta detail operasional secara cepat dan teliti. Dalam menghadapi permasalahan kerja, beliau cenderung menggunakan pendekatan yang sistematis, hati-hati, dan mempertimbangkan ketepatan sebelum mengambil keputusan. Selain itu, beliau juga cukup mampu melihat peluang perbaikan proses kerja, meskipun fleksibilitas dalam menghasilkan pendekatan baru atau yang lebih inovatif masih dapat lebih dikembangkan.", "txt_kinerja": "Dari aspek kinerja, Febianta Octora menunjukkan kecenderungan bekerja secara terstruktur, teliti, dan konsisten dalam menjalankan prosedur kerja. Beliau cenderung berhati-hati dalam menyelesaikan pekerjaan serta menjaga kualitas hasil kerja agar tetap sesuai standar yang ditetapkan. Namun, dalam situasi dengan tempo kerja tinggi dan dinamika yang cepat berubah, beliau kemungkinan membutuhkan waktu lebih dalam menyesuaikan ritme dan pendekatan kerja sehingga fleksibilitas operasional masih perlu lebih dikembangkan.", "txt_lead": "Dari aspek kerja sama dan kepemimpinan, Febianta menerapkan pendekatan kerja yang terstruktur, teliti, dan berorientasi pada kepatuhan terhadap standar kualitas serta prosedur kerja sehingga cukup mampu menjaga keteraturan proses QC dan memastikan pelaksanaan kerja berjalan konsisten sesuai ketentuan yang berlaku. Namun, dalam pengembangan bawahan, pelibatan tim, maupun menghadapi dinamika operasional dan perubahan yang cepat, fleksibilitas komunikasi dan adaptasi pendekatan kerja masih perlu lebih dikembangkan agar koordinasi dan efektivitas kerja tim QC dapat berjalan lebih optimal.", "txt_rekomendasi": "Secara umum, Febianta Octora DIPERTIMBANGKAN untuk posisi QC Manager, terutama dari sisi ketelitian, kepatuhan terhadap standar, konsistensi kerja, serta kemampuan menjaga keteraturan proses dan kualitas kerja. Profilnya juga cukup mendukung untuk memastikan pelaksanaan QC berjalan sesuai prosedur dan ketentuan yang berlaku.\n\nNamun demikian, terdapat beberapa area yang masih perlu diperhatikan, terutama dalam menghadapi dinamika operasional yang cepat, kebutuhan pengambilan keputusan yang responsif, serta pengelolaan tim yang lebih aktif dan adaptif. Pendekatan kerja yang cenderung hati-hati dan terstruktur kemungkinan membuat beliau membutuhkan waktu lebih dalam menyesuaikan ritme kerja pada situasi operasional yang sangat dinamis.", "txt_pengembangan": "Meningkatkan agility dalam menghadapi dinamika operasional yang cepat, memperkuat fleksibilitas komunikasi dan pelibatan tim, serta meningkatkan kecepatan adaptasi dan pengambilan keputusan agar efektivitas koordinasi dan pengelolaan proses QC dapat berjalan lebih optimal.", "txt_risiko": "Kecenderungan bekerja secara hati-hati, terstruktur, dan menjaga kestabilan proses kemungkinan dapat mempengaruhi kecepatan adaptasi, fleksibilitas pengambilan keputusan, serta efektivitas koordinasi dalam menghadapi dinamika operasional QC yang bergerak cepat dan berubah secara mendadak.", "txt_highlight": "Kuat dalam ketelitian, keteraturan, serta konsistensi menjaga kualitas dan standar kerja, namun fleksibilitas terhadap perubahan cepat, keberanian mengambil keputusan dalam situasi dinamis, dan pendekatan yang lebih adaptif dalam koordinasi kerja masih perlu dikembangkan.", "age": 33, "service_year": 0, "location": "PLANT MAJALENGKA", "sex": "L", "kelebihan_aspek": ["Kemampuan Berpikir & Pemahaman", "Kemampuan Pemecahan Masalah", "Kemampuan Berpikir Kreatif", "Perencanaan & Pengambilan Keputusan"], "kekurangan_aspek": ["Dorongan Berprestasi & Proaktif", "Adaptasi terhadap Perubahan"]}, {"nama": "RENNY MARIBETH SUSANTI", "nik": "16000569", "jabatan": "TECHNICAL SERVICE MANAGER", "job_level": "MANAGER", "departement": "QA & HSE", "division": "MANUFACTURE", "pendidikan": "TEKNOLOGI PANGAN", "iq_general": 118, "iq_analytic": 107, "iq_cat": "DI ATAS RATA-RATA", "kog_label": "0", "kb": 4, "km": 4, "kk": 4, "kp": 4, "kt": 3, "ko": 4, "lm": 3, "le": 3, "lpl": 4, "la": 3, "kinerja_label": "OPERASIONAL BAGUS", "lead_label": "1", "disc": "CD", "disc_grp": "C", "lead_adapt": "Average Leadership Adaptability", "fit": 0.9, "rek": "DISARANKAN DENGAN PENGEMBANGAN", "status": "COMPLETED", "txt_kognitif": "", "txt_kinerja": "", "txt_lead": "", "txt_rekomendasi": "", "txt_pengembangan": "", "txt_risiko": "", "txt_highlight": "", "age": 32, "service_year": 9, "location": "PLANT RANCAEKEK", "sex": "P", "kelebihan_aspek": ["Kemampuan Berpikir & Pemahaman", "Kemampuan Pemecahan Masalah", "Kemampuan Berpikir Kreatif", "Dorongan Berprestasi & Proaktif", "Kepemilikan terhadap Pekerjaan", "Perencanaan & Pengambilan Keputusan"], "kekurangan_aspek": []}, {"nama": "TAUFIQ INDRA HARYADI", "nik": "22000316", "jabatan": "WAREHOUSE RMPM MANAGER - MAJALENGKA", "job_level": "MANAGER", "departement": "WAREHOUSE RMPM", "division": "PPIC & LOGISTIC", "pendidikan": "MANAGEMENT - BUSINESS", "iq_general": 0, "iq_analytic": 0, "iq_cat": "", "kog_label": "", "kb": 0, "km": 0, "kk": 0, "kp": 0, "kt": 0, "ko": 0, "lm": 0, "le": 0, "lpl": 0, "la": 0, "kinerja_label": "", "lead_label": "", "disc": "", "disc_grp": "", "lead_adapt": "", "fit": 0.0, "rek": "TIDAK DISARANKAN", "status": "NOT COMPLETED", "txt_kognitif": "", "txt_kinerja": "", "txt_lead": "", "txt_rekomendasi": "", "txt_pengembangan": "", "txt_risiko": "", "txt_highlight": "", "age": 37, "service_year": 3, "location": "PLANT MAJALENGKA", "sex": "L", "kelebihan_aspek": [], "kekurangan_aspek": []}, {"nama": "PRASETYO HADI NUGROHO", "nik": "25000098", "jabatan": "LOGISTIC OPERATION MANAGER", "job_level": "MANAGER", "departement": "LOGISTIC OPERATION", "division": "PPIC & LOGISTIC", "pendidikan": "PHARMACY", "iq_general": 112, "iq_analytic": 115, "iq_cat": "DI ATAS RATA-RATA", "kog_label": "0", "kb": 3, "km": 4, "kk": 4, "kp": 3, "kt": 3, "ko": 3, "lm": 3, "le": 3, "lpl": 4, "la": 3, "kinerja_label": "OPERASIONAL CUKUP", "lead_label": "1", "disc": "IS", "disc_grp": "I", "lead_adapt": "Average Leadership Adaptability", "fit": 0.85, "rek": "DISARANKAN DENGAN PENGEMBANGAN", "status": "COMPLETED", "txt_kognitif": "Dari aspek kognitif, Pak Prasetyo menunjukkan kemampuan berpikir dan pemahaman kerja yang baik dengan kapasitas analisa yang kuat dalam memahami informasi, pola masalah, serta hubungan antar proses kerja secara logis dan sistematis. Beliau juga cukup mampu menganalisa permasalahan dan menentukan solusi kerja secara efektif dengan pendekatan yang terarah dan berbasis pertimbangan yang rasional. Selain itu, kemampuan berpikir kreatif, fleksibilitas dalam melihat alternatif solusi, serta orientasi pencapaian yang tinggi cukup mendukung dalam menghadapi tantangan kerja maupun pengembangan perbaikan proses kerja secara lebih inovatif dan efektif.", "txt_kinerja": "Dari aspek kinerja, Pak Prasetyo menunjukkan pendekatan kerja yang cukup stabil dan kooperatif dalam menjalankan pekerjaan operasional. Beliau cukup mampu menjaga pelaksanaan kerja berjalan secara terarah, adaptif terhadap dinamika kerja, serta cukup terbuka dalam menghadapi perubahan maupun kebutuhan koordinasi kerja tim. Selain itu, kemampuan pengambilan keputusan dan pengendalian emosi yang relatif cukup baik juga mendukung efektivitas pelaksanaan kerja. Namun, karena dorongan driving operasional dan perhatian terhadap detail pelaksanaan kerja tidak terlalu dominan, konsistensi monitoring serta dorongan pencapaian target yang lebih agresif masih perlu lebih diperkuat agar efektivitas kerja dapat berjalan lebih optimal.", "txt_lead": "Dari aspek kerja sama dan kepemimpinan, Pak Prasetyo menunjukkan kecenderungan bekerja sama dengan pendekatan yang cukup kooperatif, fleksibel, dan adaptif terhadap dinamika kerja maupun perubahan situasi operasional. Beliau cukup mampu menjaga hubungan kerja tim serta mendukung koordinasi kerja secara stabil dan terarah. Selain itu, pendekatan kepemimpinan yang ditunjukkan cenderung tidak terlalu dominan secara personal sehingga cukup mendukung suasana kerja yang kolaboratif. Namun, karena driving leadership dan kontrol terhadap detail pelaksanaan kerja tidak terlalu kuat, ketegasan dalam mendorong pencapaian target, monitoring operasional, serta pengendalian pelaksanaan kerja masih perlu lebih diperkuat agar efektivitas koordinasi dan pengelolaan tim dapat berjalan lebih optimal.", "txt_rekomendasi": "Secara umum, Pak Prasetyo cukup memiliki potensi untuk posisi Logistic Operation Manager, terutama dari sisi kemampuan menjaga koordinasi kerja, fleksibilitas menghadapi dinamika operasional, serta kemampuan bekerja secara stabil dan kooperatif dalam mendukung kelancaran operasional logistik. Beliau juga cukup adaptif terhadap perubahan situasi kerja dan cukup mendukung dalam menjaga hubungan kerja lintas fungsi maupun koordinasi tim operasional.\n\nNamun demikian, untuk optimal pada posisi ini, masih perlu penguatan pada aspek driving operasional, ketegasan dalam mendorong pencapaian target, serta konsistensi monitoring detail pelaksanaan kerja agar efektivitas pengelolaan operasional logistik dapat berjalan lebih optimal, terutama pada situasi kerja dengan tekanan dan tuntutan operasional yang tinggi.", "txt_pengembangan": "Meningkatkan driving operasional dan ketegasan dalam mendorong pencapaian target kerja, memperkuat konsistensi monitoring pelaksanaan operasional, serta meningkatkan perhatian terhadap detail pengendalian proses agar efektivitas pengelolaan operasional logistik dapat berjalan lebih optimal.", "txt_risiko": "Kecenderungan bekerja dengan pendekatan yang lebih stabil, kooperatif, dan relationship oriented kemungkinan dapat mempengaruhi driving operasional, ketegasan dalam mendorong pencapaian target, serta konsistensi monitoring detail pelaksanaan kerja, terutama pada situasi operasional logistik yang menuntut kontrol dan respons kerja yang cepat serta intensif.", "txt_highlight": "Kuat dalam menjaga kerja sama, stabilitas, dan adaptasi terhadap dinamika kerja, namun driving operasional dan ketegasan dalam mendorong target masih perlu diperkuat.", "age": 33, "service_year": 1, "location": "DC MAJALENGKA", "sex": "L", "kelebihan_aspek": ["Kemampuan Pemecahan Masalah", "Kemampuan Berpikir Kreatif", "Perencanaan & Pengambilan Keputusan"], "kekurangan_aspek": []}, {"nama": "ANGGA ADITYA", "nik": "25000592", "jabatan": "WAREHOUSE RMPM MANAGER RANCA & CICA", "job_level": "MANAGER", "departement": "WAREHOUSE RMPM", "division": "PPIC & LOGISTIC", "pendidikan": "ENGINEERING - INDUSTRIAL", "iq_general": 113, "iq_analytic": 118, "iq_cat": "DI ATAS RATA-RATA", "kog_label": "0", "kb": 3, "km": 4, "kk": 3, "kp": 3, "kt": 3, "ko": 3, "lm": 3, "le": 3, "lpl": 4, "la": 2, "kinerja_label": "OPERASIONAL CUKUP", "lead_label": "1", "disc": "CS", "disc_grp": "C", "lead_adapt": "Average Leadership Adaptability", "fit": 0.8, "rek": "DISARANKAN DENGAN PENGEMBANGAN", "status": "COMPLETED", "txt_kognitif": "Dari aspek kognitif, Pak Angga menunjukkan kemampuan berpikir dan pemahaman kerja yang baik dalam memahami informasi, pola masalah, serta hubungan antar proses kerja secara cepat dan sistematis. Beliau juga cukup mampu menganalisa permasalahan dan menentukan solusi kerja secara logis dan terarah. Selain itu, kemampuan berpikir kreatif yang cukup kuat mendukung dalam melihat alternatif solusi maupun peluang perbaikan kerja secara lebih inovatif dan efektif, disertai dorongan pencapaian yang cukup baik dalam mendukung penyelesaian kerja.", "txt_kinerja": "Dari aspek kinerja, Pak Angga menunjukkan pendekatan kerja yang cukup sistematis, terstruktur, dan berorientasi pada ketepatan serta kualitas pelaksanaan kerja. Beliau cukup mampu menjaga kontrol proses kerja, konsistensi pelaksanaan operasional, serta memastikan pekerjaan berjalan sesuai standar dan prosedur yang ditetapkan. Selain itu, tanggung jawab kerja dan kemampuan analisa yang dimiliki juga cukup mendukung efektivitas pengendalian pekerjaan. Namun, karena pendekatan kerja cenderung hati-hati dan berorientasi pada kontrol, pada situasi kerja yang menuntut respons sangat cepat dan dinamika perubahan tinggi kemungkinan membutuhkan waktu penyesuaian agar efektivitas pelaksanaan kerja tetap berjalan optimal.", "txt_lead": "Dari aspek kinerja, Pak Angga menunjukkan pendekatan kerja yang cukup sistematis, terstruktur, dan berorientasi pada ketepatan serta kualitas pelaksanaan kerja. Beliau cukup mampu menjaga kontrol proses kerja, konsistensi pelaksanaan operasional, serta memastikan pekerjaan berjalan sesuai standar dan prosedur yang ditetapkan. Selain itu, tanggung jawab kerja dan kemampuan analisa yang dimiliki juga cukup mendukung efektivitas pengendalian pekerjaan. Namun, karena pendekatan kerja cenderung hati-hati dan berorientasi pada kontrol, pada situasi kerja yang menuntut respons sangat cepat dan dinamika perubahan tinggi kemungkinan membutuhkan waktu penyesuaian agar efektivitas pelaksanaan kerja tetap berjalan optimal.", "txt_rekomendasi": "Dari aspek kerja sama dan kepemimpinan, Pak Angga menunjukkan kecenderungan memimpin dengan pendekatan yang terstruktur, sistematis, dan berorientasi pada kontrol serta ketepatan pelaksanaan kerja. Beliau cukup mampu mengarahkan pekerjaan dan menjaga proses kerja tetap berjalan sesuai standar, prosedur, dan target operasional yang ditetapkan. Selain itu, pendekatan kepemimpinan yang ditunjukkan cenderung tidak terlalu dominan secara personal dan lebih berfokus pada pengelolaan proses serta kualitas pelaksanaan kerja. Namun, karena pendekatannya relatif hati-hati dan berorientasi pada kontrol, fleksibilitas komunikasi, kecepatan respons terhadap dinamika kerja, serta adaptasi pada perubahan yang cepat masih perlu lebih dikembangkan agar efektivitas koordinasi dan pengelolaan tim dapat berjalan lebih optimal.", "txt_pengembangan": "Meningkatkan fleksibilitas komunikasi dan koordinasi lintas fungsi, memperkuat kecepatan respons dan pengambilan keputusan pada situasi kerja yang dinamis, serta meningkatkan adaptasi terhadap perubahan agar efektivitas leadership dan pengelolaan operasional dapat berjalan lebih optimal tanpa mengurangi kualitas kontrol kerja yang sudah dimiliki.", "txt_risiko": "Kecenderungan yang cukup berorientasi pada kontrol, ketepatan proses, dan pendekatan kerja yang hati-hati kemungkinan dapat mempengaruhi kecepatan respons, fleksibilitas dalam menghadapi perubahan yang cepat, serta efektivitas koordinasi pada situasi kerja yang dinamis dan membutuhkan pengambilan keputusan secara lebih agile lintas fungsi.", "txt_highlight": "Kuat dalam analisa, kontrol proses, dan ketepatan pelaksanaan kerja, namun fleksibilitas koordinasi dan kecepatan pengambilan keputusan pada situasi dinamis masih perlu ditingkatkan.", "age": 37, "service_year": 0, "location": "PLANT RANCAEKEK", "sex": "L", "kelebihan_aspek": ["Kemampuan Pemecahan Masalah", "Perencanaan & Pengambilan Keputusan"], "kekurangan_aspek": ["Adaptasi terhadap Perubahan"]}, {"nama": "HARIS TRIRADITIA", "nik": "26000271", "jabatan": "DC MANAGER - RANCAEKEK", "job_level": "MANAGER", "departement": "DC", "division": "PPIC & LOGISTIC", "pendidikan": "ENGINEERING - INDUSTRIAL", "iq_general": 123, "iq_analytic": 109, "iq_cat": "JAUH DI ATAS RATA-RATA", "kog_label": "0", "kb": 4, "km": 4, "kk": 4, "kp": 3, "kt": 3, "ko": 3, "lm": 3, "le": 3, "lpl": 4, "la": 2, "kinerja_label": "OPERASIONAL CUKUP", "lead_label": "1", "disc": "CD", "disc_grp": "C", "lead_adapt": "Average Leadership Adaptability", "fit": 0.8, "rek": "DISARANKAN DENGAN PENGEMBANGAN", "status": "COMPLETED", "txt_kognitif": "Secara kognitif, Pak Haris menunjukkan kemampuan berpikir yang baik dalam memahami alur operasional DC, menganalisis permasalahan secara terstruktur, serta melihat peluang perbaikan proses kerja secara realistis dan aplikatif untuk mendukung efektivitas operasional distribusi dan pergudangan.", "txt_kinerja": "Pak Haris menunjukkan dorongan kerja, ketekunan, dan orientasi pencapaian yang cukup baik dalam mendukung kelancaran operasional DC. Beliau cenderung fokus pada penyelesaian pekerjaan, menjaga ritme operasional tetap berjalan sesuai target, serta mampu bekerja secara cukup mandiri dalam mengelola aktivitas distribusi dan pergudangan sehari-hari.", "txt_lead": "Pak Haris cukup mampu mengarahkan pekerjaan dan menjaga kestabilan operasional DC secara terstruktur dan terkontrol. Namun, karena pendekatannya lebih berorientasi pada pekerjaan dan target, pelibatan bawahan serta komunikasi interpersonal masih dapat lebih ditingkatkan untuk mendukung engagement tim. Selain itu, dalam menghadapi perubahan yang bersifat top-down, beliau kemungkinan membutuhkan waktu dalam penyelarasan pendekatan kerja agar adaptasi dapat berjalan lebih optimal.", "txt_rekomendasi": "Secara umum, Pak Haris DISARANKAN DENGAN PENGEMBANGAN untuk posisi DC Manager, terutama dari sisi kemampuan menjaga kestabilan operasional, orientasi terhadap target kerja, serta pendekatan kerja yang terstruktur dan terkontrol. Beliau juga menunjukkan tanggung jawab kerja, ketekunan, dan kemampuan menjaga konsistensi pelaksanaan operasional distribusi dan pergudangan.\n\nNamun demikian, dalam pengelolaan tim dan menghadapi perubahan yang bersifat cepat maupun top-down, fleksibilitas komunikasi, pelibatan bawahan, serta kecepatan penyelarasan pendekatan kerja masih perlu lebih dikembangkan agar efektivitas koordinasi dan adaptasi operasional dapat berjalan lebih optimal.", "txt_pengembangan": "Meningkatkan fleksibilitas komunikasi dan pelibatan bawahan dalam operasional kerja, serta memperkuat kemampuan adaptasi terhadap perubahan yang bersifat cepat dan top-down agar koordinasi tim dan efektivitas pengelolaan operasional DC dapat berjalan lebih optimal.", "txt_risiko": "Kecenderungan yang lebih berorientasi pada target dan kontrol operasional kemungkinan dapat mempengaruhi fleksibilitas komunikasi, pelibatan bawahan, serta kecepatan penyelarasan pendekatan kerja dalam menghadapi perubahan operasional yang bersifat cepat dan top-down.", "txt_highlight": "Kuat dalam menjaga stabilitas operasional, konsistensi pelaksanaan kerja, dan pendekatan kerja yang praktis serta terarah, namun driving perubahan, kecepatan respons terhadap dinamika baru, dan fleksibilitas dalam menghadapi perbedaan pendekatan kerja masih perlu lebih dikembangkan.", "age": 36, "service_year": 0, "location": "DC RANCAEKEK", "sex": "L", "kelebihan_aspek": ["Kemampuan Berpikir & Pemahaman", "Kemampuan Pemecahan Masalah", "Kemampuan Berpikir Kreatif", "Perencanaan & Pengambilan Keputusan"], "kekurangan_aspek": ["Adaptasi terhadap Perubahan"]}];
+
+// Rekomendasi mapping
+function rekClass(r){
+  if(r==='DISARANKAN')return'b-dis';
+  if(r==='DISARANKAN DENGAN PENGEMBANGAN')return'b-dev';
+  if(r==='DIPERTIMBANGKAN')return'b-con';
+  return'b-no';
+}
+function rekShort(r){
+  if(r==='DISARANKAN')return'✓ Disarankan';
+  if(r==='DISARANKAN DENGAN PENGEMBANGAN')return'Disarankan + Dev';
+  if(r==='DIPERTIMBANGKAN')return'Dipertimbangkan';
+  return'Tidak Disarankan';
+}
+function rekTabClass(r){
+  if(r==='DISARANKAN')return'tab-rek-dis';
+  if(r==='DISARANKAN DENGAN PENGEMBANGAN')return'tab-rek-dev';
+  if(r==='DIPERTIMBANGKAN')return'tab-rek-con';
+  return'tab-rek-no';
+}
+function fitColor(f){
+  if(f>=0.9)return'#2d6a0a';
+  if(f>=0.8)return'#1a4db5';
+  if(f>=0.7)return'#c09000';
+  return'#c0392b';
+}
+function scoreColor(s){
+  if(s>=4)return'#2d6a0a';
+  if(s>=3)return'#1a4db5';
+  if(s>=2)return'#c09000';
+  return'#c0392b';
+}
+
+// Compute counts
+var rekCounts={DISARANKAN:0,'DISARANKAN DENGAN PENGEMBANGAN':0,DIPERTIMBANGKAN:0,'TIDAK DISARANKAN':0};
+DATA.forEach(function(d){if(rekCounts[d.rek]!==undefined)rekCounts[d.rek]++;});
+var completed=DATA.filter(function(d){return d.status==='COMPLETED';}).length;
+var avgIQ=Math.round(DATA.filter(function(d){return d.iq_general>0;}).reduce(function(a,d){return a+d.iq_general;},0)/DATA.filter(function(d){return d.iq_general>0;}).length);
+var avgFit=Math.round(DATA.filter(function(d){return d.fit>0;}).reduce(function(a,d){return a+d.fit;},0)/DATA.filter(function(d){return d.fit>0;}).length*100);
+
+// HEADER BADGES
+document.getElementById('hb1').textContent='✓ Disarankan: '+rekCounts['DISARANKAN'];
+document.getElementById('hb2').textContent='Dev Needed: '+rekCounts['DISARANKAN DENGAN PENGEMBANGAN'];
+document.getElementById('hb3').textContent='Dipertimbangkan: '+rekCounts['DIPERTIMBANGKAN'];
+document.getElementById('hb4').textContent='Tidak Disarankan: '+rekCounts['TIDAK DISARANKAN'];
+document.getElementById('hb5').textContent='Pending: '+(DATA.length-completed);
+
+// INSIGHT BOX
+document.getElementById('insightBox').innerHTML='<p><strong style="color:#f5c23a">Ringkasan CEO:</strong> Dari <strong>34 peserta</strong> assessment manager Batch 2025, hanya <strong class="hl">'+rekCounts['DISARANKAN']+' kandidat</strong> sepenuhnya siap tanpa syarat. <strong class="hl">'+rekCounts['DISARANKAN DENGAN PENGEMBANGAN']+' kandidat</strong> layak dengan pengembangan terstruktur — fokus utama pada fleksibilitas komunikasi interpersonal, pengelolaan emosi, dan coaching bawahan. <strong class="hl">'+rekCounts['DIPERTIMBANGKAN']+' kandidat</strong> memerlukan evaluasi ulang atau penyesuaian posisi. <strong class="hl">'+rekCounts['TIDAK DISARANKAN']+' kandidat</strong> tidak disarankan untuk jabatan saat ini — diperlukan succession plan sebelum akhir Q2 2025. Pola sistemik yang teridentifikasi: kuat di operational drive dan eksekusi, lemah di people leadership dan adaptabilitas komunikasi. Ini bukan isu individual — perlu program kepemimpinan lintas organisasi.</p>';
+
+// METRICS
+var mdata=[
+  {l:'Peserta Assessed',v:DATA.length,s:'Batch 2025',c:'#1a1a18'},
+  {l:'Fit Rata-rata',v:avgFit+'%',s:'Dari peserta completed',c:'#1a4db5'},
+  {l:'IQ Rata-rata',v:avgIQ,s:'Range: 96 – 127',c:'#2d8a6a'},
+  {l:'Layak Jabatan',v:rekCounts['DISARANKAN']+rekCounts['DISARANKAN DENGAN PENGEMBANGAN'],s:'Disarankan + Dev',c:'#2d6a0a'},
+  {l:'Tidak Disarankan',v:rekCounts['TIDAK DISARANKAN'],s:'Perlu action segera',c:'#c0392b'},
+];
+document.getElementById('metricsRow').innerHTML=mdata.map(function(m){
+  return'<div class="mc" style="--c:'+m.c+'"><div class="ml">'+m.l+'</div><div class="mv">'+m.v+'</div><div class="ms">'+m.s+'</div></div>';
+}).join('');
+
+/* ── SVG FIT BAR ── */
+(function(){
+  var svg=document.getElementById('svgFit');
+  var W=760,H=200,pL=4,pR=4,pT=20,pB=48;
+  var cw=W-pL-pR,ch=H-pT-pB;
+  var sorted=DATA.filter(function(d){return d.fit>0;}).sort(function(a,b){return b.fit-a.fit;});
+  var n=sorted.length,slotW=Math.floor(cw/n),bW=Math.max(Math.floor(slotW*0.65),8);
+  var html='';
+  [0.5,0.6,0.7,0.8,0.9,1.0].forEach(function(v){
+    var y=pT+ch-Math.round(v*ch);
+    html+='<line x1="'+pL+'" y1="'+y+'" x2="'+(W-pR)+'" y2="'+y+'" stroke="#f0ede8" stroke-width="1"/>';
+    html+='<text x="'+(pL-1)+'" y="'+(y+3)+'" text-anchor="end" font-size="7.5" fill="#ccc">'+(v*100)+'%</text>';
+  });
+  sorted.forEach(function(d,i){
+    var cx=pL+i*slotW+Math.floor(slotW/2);
+    var bx=cx-Math.floor(bW/2);
+    var bh=Math.round(d.fit*ch);
+    var by=pT+ch-bh;
+    var col=d.rek==='DISARANKAN'?'#2d6a0a':d.rek==='DISARANKAN DENGAN PENGEMBANGAN'?'#1a4db5':d.rek==='DIPERTIMBANGKAN'?'#c09000':'#c0392b';
+    html+='<rect x="'+bx+'" y="'+by+'" width="'+bW+'" height="'+bh+'" fill="'+col+'" rx="2" opacity=".82"/>';
+    html+='<text x="'+cx+'" y="'+(by-3)+'" text-anchor="middle" font-size="7" fill="'+col+'" font-weight="700">'+(Math.round(d.fit*100))+'%</text>';
+    var sn=d.nama.split(' ')[0];
+    html+='<text x="'+cx+'" y="'+(H-pB+12)+'" text-anchor="middle" font-size="7.5" fill="#555" font-weight="600">'+sn+'</text>';
+  });
+  html+='<line x1="'+pL+'" y1="'+(pT+ch)+'" x2="'+(W-pR)+'" y2="'+(pT+ch)+'" stroke="#ddd" stroke-width="1"/>';
+  svg.innerHTML=html;
+})();
+
+/* ── SVG DONUT REK ── */
+(function(){
+  var svg=document.getElementById('svgRek');
+  var cx=100,cy=95,r=75,ri=48;
+  var items=[
+    {k:'DISARANKAN',l:'Disarankan',col:'#2d6a0a'},
+    {k:'DISARANKAN DENGAN PENGEMBANGAN',l:'Dev Needed',col:'#1a4db5'},
+    {k:'DIPERTIMBANGKAN',l:'Dipertimbangkan',col:'#c09000'},
+    {k:'TIDAK DISARANKAN',l:'Tidak Disarankan',col:'#c0392b'}
+  ];
+  var total2=items.reduce(function(s,it){return s+rekCounts[it.k];},0);
+  var html='',angle=-Math.PI/2;
+  items.forEach(function(it){
+    var val=rekCounts[it.k],frac=val/total2,sweep=frac*2*Math.PI;
+    var x1=cx+r*Math.cos(angle),y1=cy+r*Math.sin(angle);
+    var x2=cx+r*Math.cos(angle+sweep),y2=cy+r*Math.sin(angle+sweep);
+    var xi1=cx+ri*Math.cos(angle),yi1=cy+ri*Math.sin(angle);
+    var xi2=cx+ri*Math.cos(angle+sweep),yi2=cy+ri*Math.sin(angle+sweep);
+    var lg=sweep>Math.PI?1:0;
+    html+='<path d="M'+xi1+','+yi1+' L'+x1+','+y1+' A'+r+','+r+' 0 '+lg+',1 '+x2+','+y2+' L'+xi2+','+yi2+' A'+ri+','+ri+' 0 '+lg+',0 '+xi1+','+yi1+'Z" fill="'+it.col+'" opacity=".85"/>';
+    if(frac>0.05){
+      var ma=angle+sweep/2;
+      var mr=(r+ri)/2;
+      html+='<text x="'+(cx+mr*Math.cos(ma))+'" y="'+(cy+mr*Math.sin(ma)+3)+'" text-anchor="middle" font-size="9" fill="#fff" font-weight="800">'+val+'</text>';
+    }
+    angle+=sweep;
+  });
+  // center
+  html+='<text x="'+cx+'" y="'+(cy-4)+'" text-anchor="middle" font-size="22" font-weight="800" fill="#1a1a18">'+total2+'</text>';
+  html+='<text x="'+cx+'" y="'+(cy+12)+'" text-anchor="middle" font-size="9" fill="#999">peserta</text>';
+  // legend
+  var lx=190,ly=30;
+  items.forEach(function(it,i){
+    html+='<rect x="'+lx+'" y="'+(ly+i*30)+'" width="9" height="9" rx="2" fill="'+it.col+'"/>';
+    html+='<text x="'+(lx+13)+'" y="'+(ly+i*30+8)+'" font-size="9.5" fill="#555">'+it.l+'</text>';
+    html+='<text x="'+(lx+13)+'" y="'+(ly+i*30+19)+'" font-size="11" fill="#1a1a18" font-weight="800">'+rekCounts[it.k]+'</text>';
+    html+='<text x="'+(lx+30)+'" y="'+(ly+i*30+19)+'" font-size="9" fill="#999"> ('+Math.round(rekCounts[it.k]/total2*100)+'%)</text>';
+  });
+  svg.innerHTML=html;
+})();
+
+/* ── SVG IQ ── */
+(function(){
+  var svg=document.getElementById('svgIQ');
+  var W=620,H=180,pL=10,pR=10,pT=18,pB=40;
+  var cw=W-pL-pR,ch=H-pT-pB;
+  var d2=DATA.filter(function(d){return d.iq_general>0;}).sort(function(a,b){return b.iq_general-a.iq_general;});
+  var n=d2.length,slotW=Math.floor(cw/n),bW=Math.max(Math.floor(slotW*0.37),5),gap=2;
+  var mn=80,mx=135;
+  function ys(v){return pT+ch-Math.round((v-mn)/(mx-mn)*ch);}
+  var html='';
+  [85,95,100,110,120,130].forEach(function(v){
+    var y=ys(v);
+    html+='<line x1="'+pL+'" y1="'+y+'" x2="'+(W-pR)+'" y2="'+y+'" stroke="#f0ede8" stroke-width="1"/>';
+    html+='<text x="'+(pL-3)+'" y="'+(y+3)+'" text-anchor="end" font-size="7" fill="#ccc">'+v+'</text>';
+  });
+  var avgY=ys(avgIQ);
+  html+='<line x1="'+pL+'" y1="'+avgY+'" x2="'+(W-pR)+'" y2="'+avgY+'" stroke="#1a4db5" stroke-width="1" stroke-dasharray="5,3"/>';
+  d2.forEach(function(d,i){
+    var cx=pL+i*slotW+Math.floor(slotW/2);
+    var x0=cx-bW-gap,x1=cx+gap;
+    var ic=d.iq_general>=110?'#1a4db5':d.iq_general<95?'#c0392b':'#6090d0';
+    var gc=d.iq_analytic>=110?'#1a7a56':d.iq_analytic<95?'#e07070':'#2d8a6a';
+    var ih=Math.round((d.iq_general-mn)/(mx-mn)*ch);
+    var gh=Math.round((d.iq_analytic-mn)/(mx-mn)*ch);
+    html+='<rect x="'+x0+'" y="'+(pT+ch-ih)+'" width="'+bW+'" height="'+ih+'" fill="'+ic+'" rx="2" opacity=".85"/>';
+    html+='<text x="'+(x0+bW/2)+'" y="'+(pT+ch-ih-2)+'" text-anchor="middle" font-size="7" fill="'+ic+'" font-weight="700">'+d.iq_general+'</text>';
+    html+='<rect x="'+x1+'" y="'+(pT+ch-gh)+'" width="'+bW+'" height="'+gh+'" fill="'+gc+'" rx="2" opacity=".8"/>';
+    html+='<text x="'+(x1+bW/2)+'" y="'+(pT+ch-gh-2)+'" text-anchor="middle" font-size="7" fill="'+gc+'" font-weight="700">'+d.iq_analytic+'</text>';
+    html+='<text x="'+cx+'" y="'+(H-pB+12)+'" text-anchor="middle" font-size="7" fill="#555" font-weight="600">'+d.nama.split(' ')[0]+'</text>';
+  });
+  html+='<line x1="'+pL+'" y1="'+(pT+ch)+'" x2="'+(W-pR)+'" y2="'+(pT+ch)+'" stroke="#ddd" stroke-width="1"/>';
+  svg.innerHTML=html;
+})();
+
+/* ── SVG DISC ── */
+(function(){
+  var svg=document.getElementById('svgDisc');
+  var dc={D:0,I:0,S:0,C:0};
+  DATA.forEach(function(d){if(dc[d.disc_grp]!==undefined)dc[d.disc_grp]++;});
+  var lac={'High':0,'Average':0,'Low':0};
+  DATA.forEach(function(d){
+    var k=d.lead_adapt.replace(' Leadership Adaptability','');
+    if(lac[k]!==undefined)lac[k]++;
+  });
+  var html='',W=320,H=200;
+  // DISC bars left
+  var keys=['D','I','S','C'];
+  var cols={D:'#c0392b',I:'#c09000',S:'#2d6a0a',C:'#1a4db5'};
+  var pL=20,pT=30,barH=28,gap=8,maxW=120;
+  var maxVal=Math.max.apply(null,keys.map(function(k){return dc[k];}));
+  html+='<text x="'+pL+'" y="18" font-size="9" font-weight="800" fill="#999" text-transform="uppercase">Tipe DISC</text>';
+  keys.forEach(function(k,i){
+    var y=pT+i*(barH+gap);
+    var bw=Math.round(dc[k]/maxVal*maxW);
+    html+='<text x="'+(pL-4)+'" y="'+(y+18)+'" text-anchor="end" font-size="11" font-weight="800" fill="'+cols[k]+'">'+k+'</text>';
+    html+='<rect x="'+pL+'" y="'+(y+7)+'" width="'+maxW+'" height="14" fill="#f5f4f1" rx="3"/>';
+    html+='<rect x="'+pL+'" y="'+(y+7)+'" width="'+bw+'" height="14" fill="'+cols[k]+'" rx="3" opacity=".8"/>';
+    html+='<text x="'+(pL+bw+4)+'" y="'+(y+18)+'" font-size="10" fill="'+cols[k]+'" font-weight="700">'+dc[k]+'</text>';
+  });
+  // LA bars right
+  var lkeys=['High','Average','Low'];
+  var lcols={High:'#2d6a0a',Average:'#1a4db5',Low:'#c09000'};
+  var pL2=175;
+  html+='<text x="'+pL2+'" y="18" font-size="9" font-weight="800" fill="#999">Lead. Adaptability</text>';
+  lkeys.forEach(function(k,i){
+    var y=pT+i*(barH+gap);
+    var bw=lac[k]?Math.round(lac[k]/DATA.length*maxW):0;
+    html+='<text x="'+(pL2-4)+'" y="'+(y+18)+'" text-anchor="end" font-size="8.5" font-weight="700" fill="'+lcols[k]+'">'+k+'</text>';
+    html+='<rect x="'+pL2+'" y="'+(y+7)+'" width="'+maxW+'" height="14" fill="#f5f4f1" rx="3"/>';
+    html+='<rect x="'+pL2+'" y="'+(y+7)+'" width="'+bw+'" height="14" fill="'+lcols[k]+'" rx="3" opacity=".8"/>';
+    html+='<text x="'+(pL2+bw+4)+'" y="'+(y+18)+'" font-size="10" fill="'+lcols[k]+'" font-weight="700">'+lac[k]+'</text>';
+  });
+  svg.innerHTML=html;
+})();
+
+/* ── SVG RADAR ── */
+(function(){
+  var svg=document.getElementById('svgRadar');
+  var cx=155,cy=138,r=98;
+  var labels=[['Kemampuan','Berpikir'],['Pemecahan','Masalah'],['Berpikir','Kreatif'],['Dorongan','Berprestasi'],['Ketangguhan','Kerja'],['Kepemilikan','Pekerjaan'],['Memimpin &','Dev Bawahan'],['Pengelolaan','Emosi'],['Perencanaan &','Keputusan'],['Adaptasi','Perubahan']];
+  var keys=['kb','km','kk','kp','kt','ko','lm','le','lpl','la'];
+  var d2=DATA.filter(function(d){return d.kb>0;});
+  var avg=keys.map(function(k){return d2.reduce(function(s,d){return s+(d[k]||0);},0)/d2.length;});
+  var n=labels.length,html='';
+  [1,2,3,4,5].forEach(function(level){
+    var pts=[];
+    for(var i=0;i<n;i++){var a=Math.PI*2*i/n-Math.PI/2,f=level/5;pts.push((cx+r*f*Math.cos(a)).toFixed(1)+','+(cy+r*f*Math.sin(a)).toFixed(1));}
+    html+='<polygon points="'+pts.join(' ')+'" fill="none" stroke="#e8e6e0" stroke-width="'+(level===5?1.2:0.7)+'"/>';
+    if(level===3||level===5)html+='<text x="'+(cx+2)+'" y="'+(cy-r*level/5-3)+'" font-size="7" fill="#ccc">'+level+'</text>';
+  });
+  for(var i=0;i<n;i++){var a=Math.PI*2*i/n-Math.PI/2;html+='<line x1="'+cx+'" y1="'+cy+'" x2="'+(cx+r*Math.cos(a)).toFixed(1)+'" y2="'+(cy+r*Math.sin(a)).toFixed(1)+'" stroke="#e8e6e0" stroke-width="0.8"/>';}
+  var pts2=avg.map(function(v,i){var f=Math.max(0,Math.min(1,(v-1)/4)),a=Math.PI*2*i/n-Math.PI/2;return(cx+r*f*Math.cos(a)).toFixed(1)+','+(cy+r*f*Math.sin(a)).toFixed(1);});
+  html+='<polygon points="'+pts2.join(' ')+'" fill="rgba(26,77,181,0.12)" stroke="#1a4db5" stroke-width="2"/>';
+  avg.forEach(function(v,i){var f=Math.max(0,Math.min(1,(v-1)/4)),a=Math.PI*2*i/n-Math.PI/2;html+='<circle cx="'+(cx+r*f*Math.cos(a)).toFixed(1)+'" cy="'+(cy+r*f*Math.sin(a)).toFixed(1)+'" r="3" fill="#1a4db5"/>';});
+  labels.forEach(function(lbl,i){
+    var a=Math.PI*2*i/n-Math.PI/2,lx=(cx+(r+20)*Math.cos(a)).toFixed(1),ly=(cy+(r+20)*Math.sin(a)).toFixed(1);
+    var anchor=Math.cos(a)>0.3?'start':Math.cos(a)<-0.3?'end':'middle';
+    lbl.forEach(function(line,li){html+='<text x="'+lx+'" y="'+(parseFloat(ly)+li*10)+'" text-anchor="'+anchor+'" font-size="8" fill="#666" font-weight="600">'+line+'</text>';});
+    html+='<text x="'+lx+'" y="'+(parseFloat(ly)+lbl.length*10)+'" text-anchor="'+anchor+'" font-size="8" fill="#1a4db5">rata-rata: '+avg[i].toFixed(1)+'</text>';
+  });
+  svg.innerHTML=html;
+})();
+
+/* ── SVG DIV ── */
+(function(){
+  var svg=document.getElementById('svgDiv');
+  var divs=[...new Set(DATA.map(function(d){return d.division;}))].sort();
+  var reks=['DISARANKAN','DISARANKAN DENGAN PENGEMBANGAN','DIPERTIMBANGKAN','TIDAK DISARANKAN'];
+  var rcols=['#2d6a0a','#1a4db5','#c09000','#c0392b'];
+  var W=320,H=240,pL=130,pT=10,pB=50,barH=10,groupGap=16;
+  var maxCount=Math.max.apply(null,divs.map(function(dv){return DATA.filter(function(d){return d.division===dv;}).length;}));
+  var maxW=W-pL-10;
+  var html='';
+  divs.forEach(function(dv,di){
+    var y=pT+di*(reks.length*barH+reks.length*2+groupGap);
+    var dvLabel=dv.length>18?dv.substring(0,17)+'…':dv;
+    html+='<text x="'+(pL-6)+'" y="'+(y+barH*2)+'" text-anchor="end" font-size="9" font-weight="700" fill="#333">'+dvLabel+'</text>';
+    reks.forEach(function(rk,ri){
+      var cnt=DATA.filter(function(d){return d.division===dv&&d.rek===rk;}).length;
+      var bw=cnt>0?Math.round(cnt/maxCount*maxW):0;
+      var by=y+ri*(barH+2);
+      html+='<rect x="'+pL+'" y="'+by+'" width="'+maxW+'" height="'+barH+'" fill="#f5f4f1" rx="2"/>';
+      if(bw>0){html+='<rect x="'+pL+'" y="'+by+'" width="'+bw+'" height="'+barH+'" fill="'+rcols[ri]+'" rx="2" opacity=".8"/>';}
+      if(cnt>0){html+='<text x="'+(pL+bw+3)+'" y="'+(by+8)+'" font-size="8" fill="'+rcols[ri]+'" font-weight="700">'+cnt+'</text>';}
+    });
+  });
+  // Legend
+  reks.forEach(function(rk,ri){
+    var lbl=['Disarankan','Dev Needed','Dipertimbangkan','Tidak'][ri];
+    var lx=4,ly=H-pB+ri*12;
+    html+='<rect x="'+lx+'" y="'+ly+'" width="8" height="8" rx="1" fill="'+rcols[ri]+'"/>';
+    html+='<text x="'+(lx+11)+'" y="'+(ly+7)+'" font-size="8" fill="#666">'+lbl+'</text>';
+  });
+  svg.innerHTML=html;
+})();
+
+/* ── SUMMARY TABLE ── */
+var fDiv=document.getElementById('fDiv'),fRek=document.getElementById('fRek'),fLvl=document.getElementById('fLvl');
+[...new Set(DATA.map(function(d){return d.division;}))].sort().forEach(function(d){fDiv.innerHTML+='<option>'+d+'</option>';});
+[...new Set(DATA.map(function(d){return d.job_level;}))].sort().forEach(function(l){fLvl.innerHTML+='<option>'+l+'</option>';});
+
+function mkDots(score,max){
+  var html='<div style="display:flex;gap:2px">';
+  for(var i=1;i<=max;i++){var c=i<=score?scoreColor(score):'#e8e6e0';html+='<div style="width:7px;height:7px;border-radius:1px;background:'+c+'"></div>';}
+  return html+'</div>';
+}
+
+function renderSummary(){
+  var fD=fDiv.value,fR=fRek.value,fL=fLvl.value;
+  var rows=DATA.filter(function(d){return(!fD||d.division===fD)&&(!fR||d.rek===fR)&&(!fL||d.job_level===fL);});
+  document.getElementById('rcnt').textContent='Menampilkan '+rows.length+' dari '+DATA.length+' peserta';
+  document.getElementById('sumTbody').innerHTML=rows.map(function(d,i){
+    var kogAvg=d.kb>0?Math.round((d.kb+d.km+d.kk)/3):0;
+    var kinAvg=d.kp>0?Math.round((d.kp+d.kt+d.ko)/3):0;
+    var ldAvg=d.lm>0?Math.round((d.lm+d.le+d.lpl+d.la)/4):0;
+    return'<tr><td style="color:#bbb;font-size:10px">'+(i+1)+'</td>'+
+      '<td><div style="font-weight:700;font-size:11px">'+d.nama+'</div><div style="font-size:9px;color:#999;margin-top:1px">'+d.sex+' · '+d.age+' th · '+d.service_year+' th masa kerja</div></td>'+
+      '<td><div style="font-size:10px;font-weight:600">'+d.jabatan.substring(0,35)+'</div><div style="font-size:9px;color:#999">'+d.division+'</div></td>'+
+      '<td style="font-size:12px;font-weight:800;color:'+(d.iq_general>=110?'#1a4db5':d.iq_general>0?'#555':'#ccc')+'">'+( d.iq_general||'—')+'</td>'+
+      '<td><span style="background:#f5f4f1;font-weight:800;font-size:11px;padding:2px 7px;border-radius:4px">'+d.disc+'</span></td>'+
+      '<td><div style="font-size:12px;font-weight:800;color:'+fitColor(d.fit)+'">'+( d.fit>0?Math.round(d.fit*100)+'%':'—')+'</div></td>'+
+      '<td>'+( kogAvg>0?mkDots(kogAvg,5):'—')+'</td>'+
+      '<td>'+( kinAvg>0?mkDots(kinAvg,5):'—')+'</td>'+
+      '<td>'+( ldAvg>0?mkDots(ldAvg,5):'—')+'</td>'+
+      '<td><span class="bdg '+rekClass(d.rek)+'">'+rekShort(d.rek)+'</span></td>'+
+      '<td><span class="bdg '+(d.status==='COMPLETED'?'b-ok':'b-pend')+'">'+(d.status==='COMPLETED'?'✓ Done':'⏳ Pending')+'</span></td>'+
+      '</tr>';
+  }).join('');
+}
+renderSummary();
+
+/* ── TABS & INDIVIDUAL PROFILES ── */
+var tabs=document.getElementById('tabs');
+DATA.forEach(function(d,i){
+  var btn=document.createElement('button');
+  btn.className='tab '+rekTabClass(d.rek);
+  btn.textContent=d.nama.split(' ')[0];
+  btn.title=d.nama+' — '+d.jabatan;
+  btn.onclick=function(){showProfile(i);};
+  tabs.appendChild(btn);
+});
+
+function showProfile(idx){
+  // Update active tab
+  var allTabs=document.querySelectorAll('.tab');
+  allTabs.forEach(function(t,i){t.classList.toggle('on',i===idx);});
+  var d=DATA[idx];
+  var kogAvg=d.kb>0?((d.kb+d.km+d.kk)/3).toFixed(1):0;
+  var kinAvg=d.kp>0?((d.kp+d.kt+d.ko)/3).toFixed(1):0;
+  var ldAvg=d.lm>0?((d.lm+d.le+d.lpl+d.la)/4).toFixed(1):0;
+
+  // Score bar helper
+  function scBar(label,score,max){
+    if(!score)return'';
+    var pct=score/max*100;
+    var col=scoreColor(score);
+    return'<div class="score-row"><div class="sc-lbl">'+label+'</div>'+
+      '<div class="sc-track"><div class="sc-fill" style="width:'+pct+'%;background:'+col+'"></div></div>'+
+      '<div class="sc-val" style="color:'+col+'">'+score+'</div></div>';
+  }
+
+  // Kelebihan / Kekurangan derived from text & scores
+  var kelebihanItems=d.kelebihan_aspek&&d.kelebihan_aspek.length?d.kelebihan_aspek:['—'];
+  var kekuranganItems=d.kekurangan_aspek&&d.kekurangan_aspek.length?d.kekurangan_aspek:['—'];
+
+  // Risiko items from txt_risiko parsed into bullets
+  var risikoTxt=d.txt_risiko||d.txt_highlight||'Data tidak tersedia.';
+
+  // Pengembangan from txt_pengembangan
+  var devTxt=d.txt_pengembangan||'Data tidak tersedia.';
+
+  // Rekomendasi final
+  var rekTxt=d.txt_rekomendasi||'Data tidak tersedia.';
+
+  // Kognitif, kinerja, lead narrative
+  var kogTxt=d.txt_kognitif||'Data tidak tersedia.';
+  var kinTxt=d.txt_kinerja||'Data tidak tersedia.';
+  var ldTxt=d.txt_lead||'Data tidak tersedia.';
+
+  var notCompleted=d.status!=='COMPLETED';
+
+  var html='';
+  
+  // HEADER
+  html+='<div class="prof-hdr">'+
+    '<div>'+
+    '<div class="prof-name">'+d.nama+'</div>'+
+    '<div class="prof-pos">'+d.jabatan+'</div>'+
+    '<div class="prof-meta">'+
+    '<span class="pmeta">'+d.division+'</span>'+
+    '<span class="pmeta">'+d.job_level+'</span>'+
+    (d.age?'<span class="pmeta">'+d.age+' tahun</span>':'')+ 
+    (d.service_year!==undefined?'<span class="pmeta">'+d.service_year+' th masa kerja</span>':'')+
+    (d.pendidikan?'<span class="pmeta">'+d.pendidikan+'</span>':'')+
+    (d.location?'<span class="pmeta">'+d.location+'</span>':'')+
+    '</div>'+
+    '<div style="margin-top:10px">'+
+    '<span class="bdg '+rekClass(d.rek)+'" style="font-size:11px;padding:4px 10px">'+rekShort(d.rek)+'</span>'+
+    (notCompleted?'<span class="bdg b-pend" style="margin-left:6px">⏳ Data Tidak Lengkap</span>':'')+
+    '</div>'+
+    '</div>'+
+    '<div class="prof-stats">'+
+    '<div><div class="pstat-n" style="color:'+(d.iq_general>0?'#1a4db5':'#ccc')+'">'+( d.iq_general||'—')+'</div><div class="pstat-l">IQ General</div></div>'+
+    '<div><div class="pstat-n" style="color:'+(d.iq_analytic>0?'#2d8a6a':'#ccc')+'">'+( d.iq_analytic||'—')+'</div><div class="pstat-l">IQ Analytic</div></div>'+
+    '<div><div class="pstat-n" style="color:'+fitColor(d.fit)+'">'+( d.fit>0?Math.round(d.fit*100)+'%':'—')+'</div><div class="pstat-l">Fit Score</div></div>'+
+    '<div><div class="pstat-n">'+( d.disc||'—')+'</div><div class="pstat-l">DISC Type</div></div>'+
+    '</div>'+
+    '</div>';
+
+  if(notCompleted){
+    html+='<div style="background:#fff8e6;border:1px solid #f0d080;border-radius:8px;padding:12px 14px;font-size:11px;color:#7A5000;line-height:1.7">'+
+      '<strong>⚠ Data Assessment Tidak Lengkap</strong><br>Peserta ini belum menyelesaikan assessment (NOT COMPLETED). '+
+      'Keputusan penempatan atau promosi tidak dapat dibuat berdasarkan data yang ada. '+
+      'Perlu tindak lanjut segera untuk melengkapi data sebelum evaluasi dilanjutkan.'+
+      '</div>';
+  } else {
+
+  // ASPEK SCORES
+  html+='<div class="sec-t">Skor per Aspek Kompetensi</div>';
+  html+='<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:12px">';
+  html+='<div><div style="font-size:9px;font-weight:800;color:#999;text-transform:uppercase;margin-bottom:8px">Aspek Kognitif</div>'+
+    scBar('Kemampuan Berpikir & Pemahaman',d.kb,5)+
+    scBar('Kemampuan Pemecahan Masalah',d.km,5)+
+    scBar('Kemampuan Berpikir Kreatif',d.kk,5)+
+    '</div>';
+  html+='<div><div style="font-size:9px;font-weight:800;color:#999;text-transform:uppercase;margin-bottom:8px">Aspek Kinerja</div>'+
+    scBar('Dorongan Berprestasi & Proaktif',d.kp,5)+
+    scBar('Ketangguhan Kerja',d.kt,5)+
+    scBar('Kepemilikan terhadap Pekerjaan',d.ko,5)+
+    '</div>';
+  html+='<div><div style="font-size:9px;font-weight:800;color:#999;text-transform:uppercase;margin-bottom:8px">Aspek Leadership</div>'+
+    scBar('Memimpin & Mengembangkan Bawahan',d.lm,5)+
+    scBar('Pengelolaan & Kematangan Emosi',d.le,5)+
+    scBar('Perencanaan & Pengambilan Keputusan',d.lpl,5)+
+    scBar('Adaptasi terhadap Perubahan',d.la,5)+
+    '</div>';
+  html+='</div>';
+
+  // KELEBIHAN KEKURANGAN GRID
+  html+='<div class="sec-t">Kelebihan & Kekurangan</div>';
+  html+='<div class="kk-grid">';
+  
+  // Kelebihan
+  html+='<div class="kk-box kk-grn"><div class="kk-title">✓ Kekuatan</div>';
+  kelebihanItems.forEach(function(item){
+    html+='<div class="kk-item"><div class="kk-dot"></div><div>'+item+'</div></div>';
+  });
+  // Add from kognitif label if available
+  if(d.kog_label&&d.kog_label!=='nan'&&d.kog_label.length>3){
+    html+='<div class="kk-item"><div class="kk-dot"></div><div>Profil Kognitif: '+d.kog_label+'</div></div>';
+  }
+  html+='</div>';
+
+  // Kekurangan
+  html+='<div class="kk-box kk-red"><div class="kk-title">⚠ Perlu Dikembangkan</div>';
+  if(kekuranganItems[0]==='—'){
+    html+='<div class="kk-item"><div class="kk-dot"></div><div>Tidak ada aspek di bawah standar (skor ≤2)</div></div>';
+  } else {
+    kekuranganItems.forEach(function(item){
+      html+='<div class="kk-item"><div class="kk-dot"></div><div>'+item+'</div></div>';
+    });
+  }
+  // Add kinerja label
+  if(d.kinerja_label&&d.kinerja_label!=='nan'){
+    html+='<div class="kk-item"><div class="kk-dot"></div><div>Profil Kinerja: '+d.kinerja_label+'</div></div>';
+  }
+  html+='</div>';
+
+  // DISC & Lead Adapt
+  html+='<div class="kk-box kk-yel"><div class="kk-title">◆ Profil Kepribadian</div>'+
+    '<div class="kk-item"><div class="kk-dot"></div><div>DISC: <strong>'+d.disc+'</strong> (Kelompok '+d.disc_grp+')</div></div>'+
+    '<div class="kk-item"><div class="kk-dot"></div><div>Leadership Adaptability: '+d.lead_adapt+'</div></div>'+
+    '<div class="kk-item"><div class="kk-dot"></div><div>IQ Kategorisasi: '+( d.iq_cat||'—')+'</div></div>'+
+    '</div>';
+  html+='</div>';
+
+  // NARRATIVE SECTIONS
+  html+='<div class="sec-t">Narasi Aspek Kognitif</div>';
+  html+='<div class="txt-block">'+kogTxt+'</div>';
+  html+='<div class="sec-t">Narasi Aspek Kinerja</div>';
+  html+='<div class="txt-block">'+kinTxt+'</div>';
+  html+='<div class="sec-t">Narasi Kepemimpinan & Kerja Sama</div>';
+  html+='<div class="txt-block">'+ldTxt+'</div>';
+
+  // RISIKO
+  html+='<div class="risk-box"><div class="risk-lbl">⚠ Risiko yang Perlu Diwaspadai</div>'+
+    '<div class="risk-txt">'+risikoTxt+'</div></div>';
+
+  // PENGEMBANGAN
+  html+='<div class="dev-box"><div class="dev-lbl">↑ Area Pengembangan</div>'+
+    '<div class="dev-txt">'+devTxt+'</div></div>';
+
+  // REKOMENDASI FINAL
+  html+='<div class="resum-box"><div class="resum-lbl">📋 Rekomendasi CEO</div>'+
+    '<div class="resum-txt">'+rekTxt+'</div></div>';
+
+  html+='<div class="rek-final">'+
+    '<span class="rek-label">Rekomendasi akhir:</span>'+
+    '<span class="bdg '+rekClass(d.rek)+'" style="font-size:11px;padding:4px 12px">'+rekShort(d.rek)+'</span>'+
+    '<span class="rek-label" style="margin-left:12px">Fit:</span>'+
+    '<span style="font-size:14px;font-weight:800;color:'+fitColor(d.fit)+'">'+( d.fit>0?Math.round(d.fit*100)+'%':'—')+'</span>'+
+    '<span class="rek-label" style="margin-left:12px">DISC:</span>'+
+    '<span class="disc-big">'+d.disc+'</span>'+
+    '<span style="font-size:10px;color:#888">'+d.lead_adapt+'</span>'+
+    '</div>';
+
+  } // end if completed
+
+  document.getElementById('profArea').innerHTML=html;
+  document.getElementById('profArea').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+showProfile(0);
+</script>
+</body>
+</html>
